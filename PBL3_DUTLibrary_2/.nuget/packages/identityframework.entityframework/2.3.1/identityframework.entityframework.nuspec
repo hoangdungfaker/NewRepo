@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>IdentityFramework.EntityFramework</id>
+    <version>2.3.1</version>
+    <title>IdentityFramework.EntityFramework</title>
+    <authors>Microsoft</authors>
+    <owners>Enner Pérez</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm</licenseUrl>
+    <projectUrl>https://github.com/ennerperez/Identity.Framework</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/ennerperez/Identity.Framework/master/src/.editoricon.png</iconUrl>
+    <description>.NET Identity providers that use Entity Framework.</description>
+    <summary>.NET Identity providers that use Entity Framework.</summary>
+    <copyright>Copyright © Microsoft 2019</copyright>
+    <tags>Identity Membership</tags>
+    <dependencies>
+      <dependency id="IdentityFramework.Core" version="2.3.1" />
+      <dependency id="EntityFramework" version="6.2.0" />
+    </dependencies>
+  </metadata>
+</package>

@@ -1,0 +1,380 @@
+﻿@using PBL3_DUTLibrary.Data
+@model IEnumerable<PBL3_DUTLibrary.Models.Book>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<section id="home-section" class="hero">
+    @if (TempData["Error"] != null)
+    {
+        <div id="feedback-alert" class="alert alert-danger alert-dismissible fade show" role="alert" style="position: fixed; top: 30px; right: 30px; z-index: 9999; min-width: 250px;">
+            @TempData["Error"]
+        </div>
+    }
+    <div class="home-slider owl-carousel">
+        <div class="slider-item js-fullheight">
+            <div class="overlay"></div>
+            <div class="container-fluid p-0">
+                <div class="row d-md-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
+                    @* picture background *@
+                    <img class="one-third order-md-last img-fluid" src="~/images/image-background-home-1.png" alt="">
+                    <div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+                        <div class="text">
+                            <span class="subheading">#New Arrival</span>
+                            <div class="horizontal">
+                                <h1 class="mb-4 mt-3">Library Collection 2025</h1>
+                                <p class="mb-4">
+                                    Discover a world of knowledge and imagination with our newest books.
+                                    Your next great read awaits!
+                                </p>
+
+                                <p><a asp-controller="Books" asp-action="Index" class="btn-custom">Discover Now</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="slider-item js-fullheight">
+            <div class="overlay"></div>
+            <div class="container-fluid p-0">
+                <div class="row d-flex no-gutters slider-text align-items-center justify-content-end" data-scrollax-parent="true">
+                    @* picture background *@
+                    <img class="one-third order-md-last img-fluid" src="~/images/image-background-home-2.png" alt="">
+                    <div class="one-forth d-flex align-items-center ftco-animate" data-scrollax=" properties: { translateY: '70%' }">
+                        <div class="text">
+                            <span class="subheading">#New Arrival</span>
+                            <div class="horizontal">
+                                <h1 class="mb-4 mt-3">Today's research, tomorrow's innovation</h1>
+                                <p class="mb-4">Accelerating research discovery to shape a better future.</p>
+
+                                <p><a asp-controller="Books" asp-action="Index" class="btn-custom">Discover Now</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+@* Phần render vài cuốn sách để làm mẫu   *@
+<section class="ftco-section bg-light">
+    <div class="container">
+        <div class="row justify-content-center mb-3 pb-3">
+            <div class="col-md-12 heading-section text-center ftco-animate">
+                <h2 class="mb-4">New Book Arrival</h2>
+                <p>Discover the Latest Additions to Our Library Collection – New Books Arriving Weekly for Your Reading Journey!</p>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+
+            @await Html.PartialAsync("BookItemsIntroduce", Model)
+
+        </div>
+    </div>
+</section>
+
+@* Phần đường dẫn đến các thể loại sách tiêu biểu  *@
+<section class="ftco-section ftco-choose ftco-no-pb ftco-no-pt">
+    <div class="container">
+        <div class="row no-gutters">
+            <div class="col-lg-4">
+                <div class="choose-wrap divider-one img p-5 d-flex align-items-end" style="background-image: url('@Url.Content("~/images/image-category-fantasy.jpg")');">
+
+                    <div class="text text-center text-white px-2">
+                        @* <span class="subheading">Men's Shoes</span> *@
+                        <h2>FANTASY</h2>
+                        <p>
+                            Escape to magical realms with epic tales of heroes, dragons and ancient spells. Perfect for dreamers and adventure seekers. Begin your quest!
+                            <br />
+                            <i>"Where legends come alive."</i>
+                        </p>
+                        <p><a asp-controller="Books" asp-action="Index" asp-route-loai="FANTASY" class="btn btn-black px-3 py-2">Explore now</a></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div class="row no-gutters choose-wrap divider-two align-items-stretch">
+                    <div class="col-md-12">
+                        <div class="choose-wrap full-wrap img align-self-stretch d-flex align-item-center justify-content-end" style="background-image: url('@Url.Content("~/images/image-category-health.jpg")');">
+                            <div class="col-md-7 d-flex align-items-center">
+                                <div class="text text-white px-5">
+                                    @* <span class="subheading">Women's Shoes</span> *@
+                                    <h2 style="color: #fff; font-size: 21px;">MEDICINE & HEALTH SCIENCES</h2>
+                                    <p style="color: #fff">
+                                        Essential guides on diseases, treatments, wellness & medical breakthroughs. Ideal for doctors, students & health enthusiasts. Stay informed!
+                                        <br />
+                                        <i>"Your partner in healthcare knowledge."</i>
+                                    </p>
+                                    <p><a asp-controller="Books" asp-action="Index" asp-route-loai="MEDICINE & HEALTH SCIENCES" class="btn btn-black px-3 py-2">Explore now</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="row no-gutters">
+                            <div class="col-md-6">
+                                <div class="choose-wrap wrap img align-self-stretch  d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-category-sports.jpg")');">
+                                    <div class="text text-center px-5">
+                                        @* <span class="subheading">Summer Sale</span> *@
+                                        <h2 style="color: #fff">SPORTS</h2>
+                                        <p style="color: #fff">
+                                            Master techniques, strategies and inspiring stories from world-class athletes. Perfect for players, coaches and sports fans. Train smarter!
+                                            <br />
+                                            <i>"Where champions are made."</i>
+                                        </p>
+                                        <p><a asp-controller="Books" asp-action="Index" asp-route-loai="SPORTS" class="btn btn-black px-3 py-2">Explore now</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="choose-wrap wrap img align-self-stretch d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-category-art-book.jpg")');">
+                                    <div class="text text-center text-white px-5">
+                                        @* <span class="subheading">ARTS</span> *@
+                                        <h2 style="color: #fff">ARTS</h2>
+                                        <p style="color: #fff">
+                                            Explore painting, sculpture, photography & design through premium art books. Perfect for students, artists & lovers of beauty. Get inspired!
+                                            <br />
+                                            <i>"Where creativity comes alive."</i>
+                                        </p>
+                                        <p><a asp-controller="Books" asp-action="Index" asp-route-loai="ARTS" class="btn btn-black px-3 py-2">Explore now</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="ftco-section ftco-no-pt ftco-no-pb" id="section-about">
+    <div class="container">
+        <div class="row no-gutters ftco-services">
+            <div class="col-lg-4 text-center d-flex align-self-stretch ftco-animate">
+                <div class="media block-6 services p-4 py-md-5">
+                    <div class="icon d-flex justify-content-center align-items-center mb-4">
+                        <span class="flaticon-bag"></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="heading">Library Access</h3>
+                        <p>Get easy access to thousands of books and resources from various genres. Whether you're looking for academic texts, fiction, or research materials, we provide the tools to support your learning and enjoyment.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center d-flex align-self-stretch ftco-animate">
+                <div class="media block-6 services p-4 py-md-5">
+                    <div class="icon d-flex justify-content-center align-items-center mb-4">
+                        <span class="flaticon-customer-service"></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="heading">Support Customer</h3>
+                        <p>Our friendly library staff is here to help! If you need assistance finding books, using library resources, or navigating our online catalog, we’re just a click away to provide you with expert guidance.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 text-center d-flex align-self-stretch ftco-animate">
+                <div class="media block-6 services p-4 py-md-5">
+                    <div class="icon d-flex justify-content-center align-items-center mb-4">
+                        <span class="flaticon-payment-security"></span>
+                    </div>
+                    <div class="media-body">
+                        <h3 class="heading">Secure Payments</h3>
+                        <p>We ensure all payments are handled securely. Whether you’re paying for membership, overdue fines, or special services, our encrypted payment system guarantees your transactions are safe and hassle-free.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* phan video gioi thieu *@
+<section class="ftco-section ftco-no-pb ftco-no-pt bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url('@Url.Content("~/images/image-video-library.jpg")');">
+                <a href="https://res.cloudinary.com/dababrmdw/video/upload/v1744518715/szcv7uptawkfmh0si6l2.mp4" class="icon popup-vimeo d-flex justify-content-center align-items-center">
+                    <span class="icon-play"></span>
+                </a>
+            </div>
+            <div class="col-md-7 py-md-5 wrap-about pb-md-5 ftco-animate">
+                <div class="heading-section-bold mb-4 mt-md-5">
+                    <div class="ml-md-0">
+                        <h2 class="mb-4">DUT Library</h2>
+                    </div>
+                </div>
+                <div class="pb-md-5 pb-4">
+                    @* <p>But nothing the copy said could convince her and so it didn’t take long until a few insidious Copy Writers ambushed her, made her drunk with Longe and Parole and dragged her into their agency, where they abused her for their.</p> *@
+                    <p>
+                        We have proudly served as a sanctuary for book lovers and knowledge seekers. Step into our world and discover a reading experience like no other - where each bookshelf holds endless possibilities, and every corner whispers tales of wisdom.
+
+                        More than just a collection of books, we are a vibrant community space that sparks inspiration and fuels imagination. Our carefully curated selection spans across genres and generations, offering something magical for every reader. From the moment you enter, you'll feel the warmth of shared stories and the excitement of new discoveries waiting to unfold.
+
+                        Green Knowledge Library - Where every page turn is an adventure, and every reader finds their story. Come write your next chapter with us!
+                        <br />
+                        <i>"Not just books, but bridges to new worlds."</i>
+                    </p>
+                    <p><a asp-controller="Books" asp-action="Index" class="btn btn-primary">Explore now</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+@* feedback khach hang *@
+<section class="ftco-section testimony-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5">
+                <div class="services-flow">
+                    <div class="services-2 p-4 d-flex ftco-animate">
+                        <div class="icon">
+                            <span class="flaticon-bag"></span>
+                        </div>
+                        <div class="text">
+                            <h3>Library Access</h3>
+                            <p class="mb-0">Access thousands of books and resources across various genres to support your learning and enjoyment.</p>
+                        </div>
+                    </div>
+                    <div class="services-2 p-4 d-flex ftco-animate">
+                        <div class="icon">
+                            <span class="flaticon-heart-box"></span>
+                        </div>
+                        <div class="text">
+                            <h3>Valuable Resources</h3>
+                            <p class="mb-0">Access a wide range of books, journals, and other resources to enrich your learning journey.</p>
+                        </div>
+                    </div>
+                    <div class="services-2 p-4 d-flex ftco-animate">
+                        <div class="icon">
+                            <span class="flaticon-payment-security"></span>
+                        </div>
+                        <div class="text">
+                            <h3>24/7 Access</h3>
+                            <p class="mb-0">Enjoy round-the-clock access to our digital library and resources anytime, anywhere.</p>
+                        </div>
+                    </div>
+                    <div class="services-2 p-4 d-flex ftco-animate">
+                        <div class="icon">
+                            <span class="flaticon-customer-service"></span>
+                        </div>
+                        <div class="text">
+                            <h3>Expert Guidance</h3>
+                            <p class="mb-0">Get expert assistance from our library staff for any research or book-related inquiries.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-7">
+                <div class="heading-section ftco-animate mb-5">
+                    <h2 class="mb-4">What Our Readers Say</h2>
+                    <p>Take a look at what our library members have to say about the convenience, functionality, and positive impact that our digital library platform brings to their daily academic and reading life.</p>
+                </div>
+
+                <div class="carousel-testimony owl-carousel">
+                    @{
+                        var feedbacks = ViewBag.Feedbacks as List<FeedbackCustomers>;
+                        if (feedbacks != null && feedbacks.Count > 0)
+                        {
+                            foreach (var fb in feedbacks)
+                            {
+                                <div class="item">
+                                    <div class="testimony-wrap">
+                                        <div class="user-img mb-4" style="background-image: url('@Url.Content(!string.IsNullOrEmpty(fb.profilePicture) ? fb.profilePicture : "~/images/person_1.jpg")')">
+                                            <span class="quote d-flex align-items-center justify-content-center">
+                                                <i class="icon-quote-left"></i>
+                                            </span>
+                                        </div>
+                                        <div class="text">
+                                            <p class="mb-4 pl-4 line">@fb.feedback</p>
+                                            <p class="name">@(!string.IsNullOrEmpty(fb.name) ? fb.name : "Customer")</p>
+                                            <span class="position">@(!string.IsNullOrEmpty(fb.email) ? fb.email : "email")</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    }
+                </div>
+                @await Html.PartialAsync("FeedbackCustomer")
+            </div>
+        </div>
+    </div>
+</section>
+@await Html.PartialAsync("OurTeam")
+@* follow instagram *@
+<section class="ftco-gallery">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8 heading-section text-center mb-4 ftco-animate">
+                <h2 class="mb-4">Follow Us On Instagram</h2>
+                <p>
+                    Discover a world of books, knowledge, and inspiration. Explore our library collection, stay updated with new arrivals, and enjoy a variety of literary genres. Join us on Instagram for the latest news, book recommendations, and upcoming events.
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid px-0">
+        <div class="row no-gutters">
+            <div class="col-md-4 col-lg-2 ftco-animate">
+                <a src="https://res.cloudinary.com/dababrmdw/image/upload/v1742902962/6066ae2cccd98a23e7e9bca54b2b8dba.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-home-ig-1.jpg")');">
+                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                        <span class="icon-instagram"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-2 ftco-animate">
+                <a href="~/images/image-home-ig-2.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-home-ig-2.jpg")');">
+                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                        <span class="icon-instagram"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-2 ftco-animate">
+                <a href="~/images/image-home-ig-3.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-home-ig-3.jpg")');">
+                    <div class="icon mb-4 d-flex align-items-center justify-cointent-center">
+                        <span class="icon-instagram"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-2 ftco-animate">
+                <a href="~/images/image-home-ig-4.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-home-ig-4.jpg")');">
+                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                        <span class="icon-instagram"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-2 ftco-animate">
+                <a href="~/images/image-home-ig-5.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-home-ig-5.jpg")');">
+                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                        <span class="icon-instagram"></span>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4 col-lg-2 ftco-animate">
+                <a href="~/images/image-home-ig-6.jpg" class="gallery image-popup img d-flex align-items-center" style="background-image: url('@Url.Content("~/images/image-home-ig-6.jpg")');">
+                    <div class="icon mb-4 d-flex align-items-center justify-content-center">
+                        <span class="icon-instagram"></span>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+<script>
+    window.onload = function () {
+        var alertBox = document.getElementById('feedback-alert');
+        if (alertBox) {
+            setTimeout(function () {
+                alertBox.classList.remove('show');
+                alertBox.classList.add('hide');
+            }, 2500); // 2.5 giây
+        }
+    }
+</script>

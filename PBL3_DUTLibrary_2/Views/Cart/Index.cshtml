@@ -1,0 +1,114 @@
+﻿@using PBL3_DUTLibrary.Models;
+@{
+    Layout = "_LayoutCustomer";
+}
+
+<div class="hero-wrap hero-bread" style="background-image: url('@Url.Content("~/images/bg_6.jpg")');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>Wishlist</span></p>
+                <h1 class="mb-0 bread">My Wishlist</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="ftco-section ftco-cart">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 ftco-animate">
+                <div class="cart-list">
+                    <table class="table">
+                        <thead class="thead-primary">
+                            <tr class="text-center">
+                                <th>&nbsp;</th>
+                                <th>&nbsp;</th>
+                                <th>Title</th>
+                                <th>Author</th>
+                                <th>Status</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.Books)
+                            {
+                                <tr class="text-center">
+                                    <td class="product-remove"><a asp-controller="Dashboard" asp-action="WishlistDelete" asp-route-id="@item.BookId"><span class="ion-ios-close"></span></a></td>
+
+                                    <td class="image-prod" onclick="window.location.href='@Url.Action("DetailBooks", "Books", new { id = item.BookId })'"><div class="img" style="background-image:url(@item.Image); cursor: pointer;"></div></td>
+
+                                    <td class="product-name" onclick="window.location.href='@Url.Action("DetailBooks", "Books", new { id = item.BookId })'">
+                                        <div>
+                                            <h3 class="mb-3 modify-text" style="cursor: pointer">@item.Title</h3>
+                                        </div>
+                                        @* <p>Far far away, behind the word mountains, far from the countries</p> *@
+                                    </td>
+
+                                    <td class="price ">
+                                        <div class="mb-3 modify-text">
+                                            <strong>@item.Author</strong>
+                                        </div>
+                                    </td>
+
+                                    <td class="quantity">
+                                        <div class="input-group mb-3 modify-text">
+                                            @* <input type="text" name="quantity" class="quantity form-control input-number" value="1" min="1" max="100"> *@
+                                            <strong class="card-text">
+                                                @{
+                                                    var avail_text = item.Available == 0
+                                                    ? "Not Available"
+                                                    : "Available";
+                                                }
+                                                @avail_text
+                                            </strong>
+                                        </div>
+                                    </td>
+
+                                    <td>
+                                        <a asp-controller="Dashboard" asp-action="BorrowBook" asp-route-id="@item.BookId" class="btn btn-primary py-3 px-5">Borrow</a>
+                                    </td>
+
+                                </tr>
+
+                                <!-- END TR-->
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        @* <div class="row justify-content-start"> *@
+        @*     <div class="col col-lg-5 col-md-6 mt-5 cart-wrap ftco-animate"> *@
+        @*         <div class="cart-total mb-3"> *@
+        @*             <h3>Cart Totals</h3> *@
+        @*             <p class="d-flex"> *@
+        @*                 <span>Subtotal</span> *@
+        @*                 <span>$20.60</span> *@
+        @*             </p> *@
+        @*             <p class="d-flex"> *@
+        @*                 <span>Delivery</span> *@
+        @*                 <span>$0.00</span> *@
+        @*             </p> *@
+        @*             <p class="d-flex"> *@
+        @*                 <span>Discount</span> *@
+        @*                 <span>$3.00</span> *@
+        @*             </p> *@
+        @*             <hr> *@
+        @*             <p class="d-flex total-price"> *@
+        @*                 <span>Total</span> *@
+        @*                 <span>$17.60</span> *@
+        @*             </p> *@
+        @*         </div> *@
+        @*         <p class="text-center"><a href="checkout.html" class="btn btn-primary py-3 px-4">Proceed to Checkout</a></p> *@
+        @*     </div> *@
+        @* </div> *@
+    </div>
+</section>
+
+<style>
+    .modify-text {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+</style>

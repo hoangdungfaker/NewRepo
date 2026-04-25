@@ -1,0 +1,50 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div class="card-box mb-30">
+    <h2 class="h4 pd-20">Most Active User</h2>
+    <table class="data-table table nowrap">
+        <thead>
+            <tr>
+                <th class="table-plus datatable-nosort">&nbsp;</th>
+                <th>Email</th>
+                <th>Real Name</th>
+                <th>Username</th>
+                @* <th>Price</th> *@
+                <th style="text-align: center;">Login Count</th>
+                @* <th class="datatable-nosort">Action</th>  *@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var user in ViewBag.MostAccessLogin)
+            {
+                <tr>
+                    <td class="table-plus">
+                        @{
+                            var ImageUrl = string.IsNullOrEmpty(user.Image) ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" : user.Image;
+                        }
+                        <img style="border-radius: 50%;" src="@ImageUrl" width="70" height="70" alt="">
+                    </td>
+                    <td>
+                        @{
+                            var displayTitle = user.Email.Length > 30
+                            ? user.Email.Substring(0, 70) + "..."
+                            : user.Email;
+                        }
+                        <h5 class="font-16 ">@displayTitle</h5>
+
+                    </td>
+                    <td>@user.RealName</td>
+                    <td>@user.Username</td>
+                    @* <td>$1000</td> *@
+                    <td style="text-align:center;">@user.LoginCount</td>
+                    @* <td> *@
+                    @*     <div class="dropdown"> *@
+                    @*         <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown"> *@
+                    @*             <i class="dw dw-more"></i> *@
+                    @*         </a *@
+                    @*     </div> *@
+                    @* </td> *@
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,32 @@
+﻿<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+<div class="sidebar-box " style="background: #f8f9fa !important">
+    <form asp-controller="Books" asp-action="Search" class="search-form">
+        <div class="form-group div-search">
+            <button class="icon ion-ios-search" asp-controller="Books" asp-action="Search"></button>
+            <input type="text" class="form-control" placeholder="Search for books" name="query" value="@ViewBag.Query">
+            @if (ViewBag.Loai != null)
+            {
+                foreach (var genre in ViewBag.Loai)
+                {
+                    <input type="hidden" name="loai" value="@genre">
+                }
+            }
+        </div>
+    </form>
+</div>
+
+<style>
+    .icon {
+        background-color: transparent;
+        padding: 10px 20px;
+        cursor: pointer;
+        border: none;
+    }
+
+    .div-search {
+        margin-left: 12%;
+        position: relative;
+        max-width: 500px;
+        width: 30%;
+    }
+</style>

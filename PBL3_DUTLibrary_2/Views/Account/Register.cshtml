@@ -1,0 +1,277 @@
+﻿@{
+    Layout = null;
+    var regError = TempData["RegError"] as string;
+    var showRegError = TempData["ShowRegError"] as string;
+}
+
+@if (!string.IsNullOrEmpty(regError) && !string.IsNullOrEmpty(showRegError))
+{
+    <style>
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+        }
+
+        .toast {
+            min-width: 300px;
+            background: #fff;
+            border-left: 5px solid #DBCC8F;
+            color: #333;
+            padding: 15px 20px;
+            border-radius: 6px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            font-family: 'Roboto', sans-serif;
+            position: relative;
+            overflow: hidden;
+            transform: translateX(110%);
+            opacity: 0;
+        }
+
+            .toast.show {
+                animation: slideIn 0.5s ease-out forwards;
+            }
+
+            .toast.hide {
+                animation: slideOut 0.5s ease-in forwards;
+            }
+
+        @@keyframes slideIn {
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @@keyframes slideOut {
+            to {
+                transform: translateX(110%);
+                opacity: 0;
+            }
+        }
+
+        .toast-icon {
+            color: #E45B44;
+            font-size: 20px;
+            margin-right: 10px;
+        }
+
+        .toast-close {
+            background: none;
+            border: none;
+            color: #999;
+            font-size: 16px;
+            margin-left: auto;
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+            .toast-close:hover {
+                color: #DBCC8F;
+            }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #DBCC8F;
+            width: 100%;
+            animation: progressAnim 8s linear forwards;
+        }
+
+        @@keyframes progressAnim {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+    </style>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            showToast('@TempData["RegError"]', 5000); // 3 giây
+        });
+
+        function showToast(message, duration) {
+            const container = document.getElementById('toastContainer');
+
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+
+            toast.innerHTML = `
+                <span class="toast-icon"><i class="fas fa-exclamation-circle"></i></span>
+                <span style="flex-grow:1">${message}</span>
+                <button class="toast-close" onclick="removeToast(this.parentElement)"><i class="fas fa-times"></i></button>
+                <div class="toast-progress"></div>
+            `;
+
+            container.appendChild(toast);
+
+            // Trigger show animation
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 100); // nhỏ delay để animation chạy đúng
+
+            // Auto remove after duration
+            setTimeout(() => {
+                toast.classList.remove('show');
+                toast.classList.add('hide');
+            }, duration);
+
+            toast.addEventListener('animationend', function (e) {
+                if (e.animationName === 'slideOut') {
+                    toast.remove();
+                }
+            });
+        }
+
+        function removeToast(toast) {
+            toast.classList.remove('show');
+            toast.classList.add('hide');
+        }
+    </script>
+
+}
+
+@using PBL3_DUTLibrary.ViewModels;
+@model RegisterViewModel;
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,400&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="~/Login_SignUp/fonts/icomoon/style.css">
+
+<link rel="stylesheet" href="~/Login_SignUp/css/owl.carousel.min.css">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="~/Login_SignUp/css/bootstrap.min.css">
+
+<!-- Style -->
+<link rel="stylesheet" href="~/Login_SignUp/css/style.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+<title>Signup</title>
+
+
+<div class="d-lg-flex half">
+    <div class="bg order-1 order-md-2" style="background-image: url('@Url.Content("~/Login_SignUp/images/image-signup-background.jpg")');"></div>
+    <div class="contents order-2 order-md-1">
+
+        <div class="container">
+            <div class="row align-items-center justify-content-center">
+                <div class="col-md-7">
+                    <h3>Sign Up to <strong>DUTLibrary</strong></h3>
+                    <p class="mb-4">Welcome to DUT Library - where knowledge connects, borrowing is simplified, and you can explore our rich academic collection.</p>
+                    <form asp-controller="Account" asp-action="Register" method="post">
+                        <div class="form-group first">
+                            <label for="email">Email</label>
+                            <input asp-for="@Model.Email" class="form-control" placeholder="your-email@gmail.com" id="email" autocomplete="off" name="Email" value="@Model.Email" required>
+                            <span asp-validation-for="@Model.Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group last mb-3">
+                            <label for="username">Username</label>
+                            <input asp-for="@Model.Username" type="text" class="form-control" placeholder="Username" id="username" autocomplete="off" name="Username" value="@Model.Username" required>
+                            <span asp-validation-for="@Model.Username" class="text-danger"></span>
+                        </div>
+                        <div class="form-group last mb-3">
+                            <label for="registerPassword">Password</label>
+                            <input asp-for="@Model.Password" type="password" class="form-control" placeholder="Password" id="registerPassword" name="Password" autocomplete="new-password" value="@Model.Password">
+                            <span asp-validation-for="@Model.Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group last mb-3">
+                            <label for="ConfirmPassword">Confirm Password</label>
+                            <input asp-for="@Model.ConfirmPassword" type="password" class="form-control" placeholder="Confirm Password" id="registerConfirmPassword" name="ConfirmPassword" autocomplete="new-password" value="@Model.ConfirmPassword">
+                            <span asp-validation-for="@Model.ConfirmPassword" class="text-danger"></span>
+                        </div>
+
+                        <div class="d-flex mb-3 align-items-center justify-content-between">
+                            <label class="control control--checkbox mb-0">
+                                <span class="caption">Show Password</span>
+                                <input type="checkbox" id="registerShowPassword" />
+                                <div class="control__indicator"></div>
+                            </label>
+                            <label class="control control--checkbox mb-0 d-flex align-items-center flex-row-reverse">
+                                <span class="caption">I agree to the <a href="#" style="color: #DBCC8F">Terms & Conditions</a></span>
+                                <input type="checkbox" required />
+                                <div class="control__indicator"></div>
+                            </label>
+                        </div>
+                        <p class="text-center">Already have an account? <a asp-action="Login" asp-controller="Account" style="color: #DBCC8F"><strong>Sign in</strong></a></p>
+                        <p class="w-100 text-center color-text-888">&mdash; Or Sign Up With &mdash;</p>
+                        <div class="social d-flex text-center">
+                            <a href="#" class="px-2 py-2 mr-md-1 rounded icon-hover" style="text-decoration: none;"><i class="fa-brands fa-google"></i></span> Google</a>
+                            @*                             <a href="#" class="px-2 py-2 ml-md-1 rounded icon-hover" style="text-decoration: none;"><i class="fa-brands fa-facebook"></i> Facebook</a> *@
+                        </div>
+                        <input type="submit" value="Sign Up" class="btn btn-block btn-primary" style="background-color: #DBCC8F; border: none; color: #fff;">
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+<style>
+    .color-text-888 {
+        color: #888;
+        margin-bottom: 5px;
+    }
+
+    .social {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        margin-bottom: 10px;
+        margin-top: 0px;
+    }
+
+    .half .contents .form-control, .half .bg .form-control {
+        border: none;
+        -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        border-radius: 4px;
+        height: 40px;
+        background: #fff;
+    }
+
+        .half .contents .form-control:active, .half .contents .form-control:focus, .half .bg .form-control:active, .half .bg .form-control:focus {
+            outline: none;
+            -webkit-box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+            box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
+        }
+
+    .control input[type="checkbox"]:checked ~ .control__indicator {
+        background: #DBCC8F;
+        border-color: #DBCC8F;
+    }
+
+    .control:hover input[type="checkbox"]:checked ~ .control__indicator {
+        background: #DBCC8F;
+        border-color: #DBCC8F;
+    }
+
+    .icon-hover:hover {
+        color: #DBCC8F;
+    }
+</style>
+
+
+<script src="~/Login_SignUp/js/jquery-3.3.1.min.js"></script>
+<script src="~/Login_SignUp/js/popper.min.js"></script>
+<script src="~/Login_SignUp/js/bootstrap.min.js"></script>
+<script src="~/Login_SignUp/js/main.js"></script>
+<script>
+    document.getElementById('registerShowPassword').addEventListener('change', function() {
+            var rp = document.getElementById('registerPassword');
+            var rcp = document.getElementById('registerConfirmPassword');
+            rp.type = this.checked ? 'text' : 'password';
+            rcp.type = this.checked ? 'text' : 'password';
+        });
+</script>

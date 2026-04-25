@@ -1,0 +1,52 @@
+﻿<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+<div class="card-box mb-30">
+    <h2 class="h4 pd-20">Most Borrowed Books</h2>
+    <table class="data-table table nowrap">
+        <thead>
+            <tr>
+                <th class="table-plus datatable-nosort">&nbsp;</th>
+                <th>Title</th>
+                @* <th>Color</th> *@
+                @* <th>Size</th> *@
+                @* <th>Price</th> *@
+                <th style="text-align: center;">Borrow Count</th>
+                @* <th class="datatable-nosort">Action</th>  *@
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var book in ViewBag.PopularBooks)
+            {
+                <tr>
+                    <td class="table-plus">
+                        <img src="@book.Image" width="70" height="70" alt="">
+                    </td>
+                    <td>
+                        @{
+                            var displayTitle = book.Title.Length > 30
+                            ? book.Title.Substring(0, 30) + "..."
+                            : book.Title;
+                        }
+                        <h5 class="font-16 ">@displayTitle</h5>
+                        by @book.Author
+                    </td>
+                    @* <td>Black</td> *@
+                    @* <td>M</td> *@
+                    @* <td>$1000</td> *@
+                    <td style="text-align:center;">@book.BorrowCount</td>
+                    <td>
+                        <div class="dropdown">
+                            <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                <i class="dw dw-more"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                <a class="dropdown-item" asp-controller="Books" asp-action="DetailBooks" asp-route-id="@book.BookId"><i class="dw dw-eye"></i> View</a>
+                                @* <a class="dropdown-item" href="#"><i class="dw dw-edit2"></i> Edit</a> *@
+                                @* <a class="dropdown-item" href="#"><i class="dw dw-delete-3"></i> Delete</a> *@
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

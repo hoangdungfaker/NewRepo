@@ -1,0 +1,568 @@
+@{
+    Layout = null;
+}
+
+@* Views/Shared/_AuthModalPartial.cshtml *@
+<div class="modal fade" id="authModal" tabindex="-1" aria-labelledby="authModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content" style="border-radius: 0.75rem;">
+            <div class="row g-0">
+                <!-- Cột ảnh: sử dụng 2 ảnh khác nhau cho Login và Sign Up -->
+                <div class="col-md-6 d-none d-md-block position-relative">
+                    <!-- Ảnh cho Login -->
+                    <img src="~/images/28a4234dcaaf6054dd1b93f8b078b97f.jpg"
+                         class="img-fluid modal-image login-img"
+                         style="height: 100%; object-fit: cover;"
+                         alt="Login Image">
+                    <!-- Ảnh cho Sign Up -->
+                    <img src="~/images/56a11906dac41f8ec758f394f40a3b8c.jpg"
+                         class="img-fluid modal-image signup-img"
+                         style="height: 100%; object-fit: cover; display: none;"
+                         alt="Sign Up Image">
+                    <!-- Ảnh cho Forgot Password (nếu muốn) -->
+                    <img src="~/images/z6330331098028_35bffefeb472369b016e4e9ea2917e97.jpg"
+                         class="img-fluid modal-image forgot-img"
+                         style="height: 100%; object-fit: cover; display: none;"
+                         alt="Forgot Image">
+                </div>
+                <!-- Phần form bên phải -->
+                <div class="col-md-6">
+                    <div class="modal-header">
+                        <!-- Căn giữa tiêu đề, in hoa -->
+                        <h5 class="modal-title" id="authModalLabel"
+                            style="width:100%; text-align:center; text-transform:uppercase;">
+                            Login
+                        </h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <!-- Form Login -->
+                        <form id="loginForm">
+                            <div class="form-floating mb-1">
+                                <input type="email" class="form-control custom-input"
+                                       id="loginEmail" name="loginEmail" placeholder="Email">
+                                <label for="loginEmail">Email</label>
+                            </div>
+                            <div class="error-message" id="loginEmailError"></div>
+                            <div class="form-floating mb-1">
+                                <input type="password" class="form-control custom-input"
+                                       id="loginPassword" name="loginPassword" placeholder="Password">
+                                <label for="loginPassword">Password</label>
+                            </div>
+                            <div class="error-message" id="loginPasswordError"></div>
+                            <!-- Checkbox Show Password (Login) -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="loginShowPassword">
+                                <label class="form-check-label" for="loginShowPassword">
+                                    Show Password
+                                </label>
+                            </div>
+                            <div class="mb-3">
+                                <!-- Link mở form Forgot -->
+                                <a href="#" class="modal-link" id="showForgotLink">Forgot password?</a>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Login</button>
+                            </div>
+                        </form>
+
+                        <!-- Link chuyển sang Sign Up (chỉ hiển thị ở chế độ Login) -->
+                        <div class="mt-3 text-center" id="registerLinkContainer">
+                            Don't have an account?
+                            <a href="#" id="showRegisterLink" class="modal-link">Sign up</a>
+                        </div>
+
+                        <hr>
+
+                        <!-- Form Register (ẩn mặc định) -->
+                        <form id="registerForm" style="display: none;">
+                            <div class="form-floating mb-1">
+                                <input type="text" class="form-control custom-input"
+                                       id="regUsername" name="regUsername" placeholder="Username">
+                                <label for="regUsername">Username</label>
+                            </div>
+                            <div class="error-message" id="regUsernameError"></div>
+                            <div class="form-floating mb-1">
+                                <input type="email" class="form-control custom-input"
+                                       id="regEmail" name="regEmail" placeholder="Email">
+                                <label for="regEmail">Email</label>
+                            </div>
+                            <div class="error-message" id="regEmailError"></div>
+                            <div class="form-floating mb-1">
+                                <input type="password" class="form-control custom-input"
+                                       id="regPassword" name="regPassword" placeholder="Password">
+                                <label for="regPassword">Password</label>
+                            </div>
+                            <div class="error-message" id="regPasswordError"></div>
+                            <div class="form-floating mb-1">
+                                <input type="password" class="form-control custom-input"
+                                       id="regConfirmPassword" name="regConfirmPassword" placeholder="Confirm Password">
+                                <label for="regConfirmPassword">Confirm Password</label>
+                            </div>
+                            <div class="error-message" id="regConfirmPasswordError"></div>
+                            <!-- Checkbox Show Password (Register) -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="registerShowPassword">
+                                <label class="form-check-label" for="registerShowPassword">
+                                    Show Password
+                                </label>
+                            </div>
+                            <!-- Checkbox "I agree the Terms & Conditions" -->
+                            <div class="form-check mb-3">
+                                <input type="checkbox" class="form-check-input" id="agreeTerms">
+                                <label class="form-check-label" for="agreeTerms">
+                                    I agree the <a href="/terms" class="modal-link">Terms &amp; Conditions</a>
+                                </label>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Sign Up</button>
+                            </div>
+                        </form>
+
+                        <!-- Link chuyển về Login từ Sign Up (chỉ hiển thị ở chế độ Sign Up) -->
+                        <div class="mt-3 text-center" id="loginLinkContainer" style="display: none;">
+                            Already have an account?
+                            <a href="#" id="showLoginLink" class="modal-link">Login</a>
+                        </div>
+
+                        <hr>
+
+                        <!-- Form Forgot Password (ẩn mặc định) -->
+                        <form id="forgotForm" style="display: none;">
+                            <div class="form-floating mb-1">
+                                <input type="email" class="form-control custom-input"
+                                       id="forgotEmail" name="forgotEmail" placeholder="Email">
+                                <label for="forgotEmail">Email</label>
+                            </div>
+                            <div class="error-message" id="forgotEmailError"></div>
+                            <div class="form-floating mb-1">
+                                <input type="password" class="form-control custom-input"
+                                       id="forgotPassword" name="forgotPassword" placeholder="New Password">
+                                <label for="forgotPassword">New Password</label>
+                            </div>
+                            <div class="error-message" id="forgotPasswordError"></div>
+                            <div class="form-floating mb-1">
+                                <input type="password" class="form-control custom-input"
+                                       id="forgotConfirmPassword" name="forgotConfirmPassword" placeholder="Confirm New Password">
+                                <label for="forgotConfirmPassword">Confirm New Password</label>
+                            </div>
+                            <div class="error-message" id="forgotConfirmPasswordError"></div>
+                            <!-- Checkbox Show Password (Forgot Password) -->
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" id="forgotShowPassword">
+                                <label class="form-check-label" for="forgotShowPassword">
+                                    Show Password
+                                </label>
+                            </div>
+                            <div class="d-grid">
+                                <button type="submit" class="btn btn-success">Reset Password</button>
+                            </div>
+                        </form>
+                        <!-- Link quay lại Login từ Forgot -->
+                        <div class="mt-3 text-center" id="backToLoginFromForgot" style="display: none;">
+                            Remember your password?
+                            <a href="#" id="showLoginLink2" class="modal-link">Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Custom CSS (giữ nguyên và thêm style cho error message) -->
+<style>
+    .custom-input:focus {
+        border-color: #000 !important;
+        box-shadow: none !important;
+    }
+
+    .form-floating > .form-control:focus ~ label,
+    .form-floating > .form-control:not(:placeholder-shown) ~ label {
+        color: #28a745;
+    }
+
+    .modal-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .modal-link {
+        color: #28a745;
+        text-decoration: none;
+    }
+
+        .modal-link:hover {
+            text-decoration: underline;
+        }
+
+    .form-check-input {
+        accent-color: #28a745;
+    }
+
+        .form-check-input:checked {
+            background-color: #28a745 !important;
+            border-color: #28a745 !important;
+        }
+
+        .form-check-input:focus {
+            box-shadow: none !important;
+            outline: none !important;
+        }
+
+    /* Style for error messages */
+    .error-message {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-bottom: 0.5rem;
+        min-height: 1rem;
+    }
+
+    @@media (max-width: 576px) {
+        .modal-dialog {
+            width: 90%;
+            margin: 1rem auto;
+        }
+    }
+</style>
+
+<!-- JavaScript để chuyển đổi giữa Login, Register, ForgotPassword + Show Password + AJAX handling -->
+<script>
+    let loginForm = document.getElementById("loginForm");
+    let registerForm = document.getElementById("registerForm");
+    let forgotForm = document.getElementById("forgotForm");
+
+    let showRegisterLink = document.getElementById("showRegisterLink");
+    let showLoginLink = document.getElementById("showLoginLink");
+    let showForgotLink = document.getElementById("showForgotLink");
+
+    let registerLinkContainer = document.getElementById("registerLinkContainer");
+    let loginLinkContainer = document.getElementById("loginLinkContainer");
+    let backToLoginFromForgot = document.getElementById("backToLoginFromForgot");
+
+    // Helper functions to show different forms
+    function showLoginForm() {
+        document.querySelector("#authModal .modal-title").textContent = "LOGIN";
+        loginForm.style.display = "block";
+        registerForm.style.display = "none";
+        forgotForm.style.display = "none";
+        registerLinkContainer.style.display = "block";
+        loginLinkContainer.style.display = "none";
+        backToLoginFromForgot.style.display = "none";
+
+        document.querySelector(".login-img").style.display = "block";
+        document.querySelector(".signup-img").style.display = "none";
+        document.querySelector(".forgot-img").style.display = "none";
+    }
+
+    function showRegisterForm() {
+        document.querySelector("#authModal .modal-title").textContent = "SIGN UP";
+        loginForm.style.display = "none";
+        registerForm.style.display = "block";
+        forgotForm.style.display = "none";
+        registerLinkContainer.style.display = "none";
+        loginLinkContainer.style.display = "block";
+        backToLoginFromForgot.style.display = "none";
+
+        document.querySelector(".login-img").style.display = "none";
+        document.querySelector(".signup-img").style.display = "block";
+        document.querySelector(".forgot-img").style.display = "none";
+    }
+
+    function showForgotForm() {
+        document.querySelector("#authModal .modal-title").textContent = "FORGOT PASSWORD";
+        loginForm.style.display = "none";
+        registerForm.style.display = "none";
+        forgotForm.style.display = "block";
+        registerLinkContainer.style.display = "none";
+        loginLinkContainer.style.display = "none";
+        backToLoginFromForgot.style.display = "block";
+
+        document.querySelector(".login-img").style.display = "none";
+        document.querySelector(".signup-img").style.display = "none";
+        document.querySelector(".forgot-img").style.display = "block";
+    }
+
+    // Function to clear all error messages
+    function clearAllErrorMessages() {
+        const errorElements = document.querySelectorAll('.error-message');
+        errorElements.forEach(element => {
+            element.textContent = '';
+        });
+    }
+
+    // Chuyển sang Sign Up
+    showRegisterLink.addEventListener("click", function(e){
+        e.preventDefault();
+        showRegisterForm();
+        // Clear error messages
+        clearAllErrorMessages();
+    });
+
+    // Chuyển sang Login
+    showLoginLink.addEventListener("click", function(e){
+        e.preventDefault();
+        showLoginForm();
+        // Clear error messages
+        clearAllErrorMessages();
+    });
+
+    // Chuyển sang Forgot Password
+    showForgotLink.addEventListener("click", function(e){
+        e.preventDefault();
+        showForgotForm();
+        // Clear error messages
+        clearAllErrorMessages();
+    });
+
+    // Từ Forgot => Login
+    let showLoginLink2 = document.getElementById("showLoginLink2");
+    showLoginLink2.addEventListener("click", function(e){
+        e.preventDefault();
+        showLoginForm();
+        // Clear error messages
+        clearAllErrorMessages();
+    });
+
+    // Checkbox Show Password (Login)
+    document.getElementById("loginShowPassword").addEventListener("change", function(e){
+        let passInput = document.getElementById("loginPassword");
+        passInput.type = this.checked ? "text" : "password";
+    });
+
+    // Checkbox Show Password (Register)
+    document.getElementById("registerShowPassword").addEventListener("change", function(e){
+        let pass1 = document.getElementById("regPassword");
+        let pass2 = document.getElementById("regConfirmPassword");
+        if (this.checked) {
+            pass1.type = "text";
+            pass2.type = "text";
+        } else {
+            pass1.type = "password";
+            pass2.type = "password";
+        }
+    });
+
+    // Checkbox Show Password (Forgot Password)
+    document.getElementById("forgotShowPassword").addEventListener("change", function(e){
+        let pass1 = document.getElementById("forgotPassword");
+        let pass2 = document.getElementById("forgotConfirmPassword");
+        if (this.checked) {
+            pass1.type = "text";
+            pass2.type = "text";
+        } else {
+            pass1.type = "password";
+            pass2.type = "password";
+        }
+    });
+
+      // AJAX form submission for Login
+    loginForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Client-side validation
+        let valid = true;
+        clearAllErrorMessages();
+
+        if (!document.getElementById('loginEmail').value) {
+            document.getElementById('loginEmailError').textContent = 'Email is required.';
+            valid = false;
+        }
+
+        if (!document.getElementById('loginPassword').value) {
+            document.getElementById('loginPasswordError').textContent = 'Password is required.';
+            valid = false;
+        }
+
+        if (!valid) {
+            return;
+        }
+
+        // Create form data object
+        const formData = new FormData(loginForm);
+
+        // Send AJAX request
+        fetch('/Account/Login', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check for validation errors
+            if (data.loginEmailError) {
+                document.getElementById('loginEmailError').textContent = data.loginEmailError;
+            }
+            if (data.loginPasswordError) {
+                document.getElementById('loginPasswordError').textContent = data.loginPasswordError;
+            }
+
+            // If success, store the success message and redirect
+            if (data.success) {
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+
+                // Store the message in localStorage before redirecting
+                localStorage.setItem('pendingToasts', JSON.stringify([{
+                    message: data.success,
+                    type: 'success'
+                }]));
+
+                // Redirect to the specified URL
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // AJAX form submission for Register
+    registerForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Client-side validation
+        let valid = true;
+        clearAllErrorMessages();
+
+        if (!document.getElementById('regUsername').value) {
+            document.getElementById('regUsernameError').textContent = 'Username is required.';
+            valid = false;
+        }
+
+        if (!document.getElementById('regEmail').value) {
+            document.getElementById('regEmailError').textContent = 'Email is required.';
+            valid = false;
+        }
+
+        if (!document.getElementById('regPassword').value) {
+            document.getElementById('regPasswordError').textContent = 'Password is required.';
+            valid = false;
+        }
+
+        if (document.getElementById('regPassword').value !== document.getElementById('regConfirmPassword').value) {
+            document.getElementById('regConfirmPasswordError').textContent = 'Passwords do not match.';
+            valid = false;
+        }
+
+        if (!document.getElementById('agreeTerms').checked) {
+            document.getElementById('regConfirmPasswordError').textContent = 'You must agree to the Terms & Conditions.';
+            valid = false;
+        }
+
+        if (!valid) {
+            return;
+        }
+
+        // Create form data object
+        const formData = new FormData(registerForm);
+
+        // Send AJAX request
+        fetch('/Account/Register', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check for validation errors
+            if (data.regUsernameError) {
+                document.getElementById('regUsernameError').textContent = data.regUsernameError;
+            }
+            if (data.regEmailError) {
+                document.getElementById('regEmailError').textContent = data.regEmailError;
+            }
+            if (data.regPasswordError) {
+                document.getElementById('regPasswordError').textContent = data.regPasswordError;
+            }
+            if (data.regConfirmPasswordError) {
+                document.getElementById('regConfirmPasswordError').textContent = data.regConfirmPasswordError;
+            }
+
+            // If success, store the success message and redirect
+            if (data.success) {
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+
+                // Store the message in localStorage before redirecting
+                localStorage.setItem('pendingToasts', JSON.stringify([{
+                    message: data.success,
+                    type: 'success'
+                }]));
+
+                // Redirect to the specified URL
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // AJAX form submission for Forgot Password
+    forgotForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Client-side validation
+        let valid = true;
+        clearAllErrorMessages();
+
+        if (!document.getElementById('forgotEmail').value) {
+            document.getElementById('forgotEmailError').textContent = 'Email is required.';
+            valid = false;
+        }
+
+        if (!document.getElementById('forgotPassword').value) {
+            document.getElementById('forgotPasswordError').textContent = 'New password is required.';
+            valid = false;
+        }
+
+        if (document.getElementById('forgotPassword').value !== document.getElementById('forgotConfirmPassword').value) {
+            document.getElementById('forgotConfirmPasswordError').textContent = 'Passwords do not match.';
+            valid = false;
+        }
+
+        if (!valid) {
+            return;
+        }
+
+        // Create form data object
+        const formData = new FormData(forgotForm);
+
+        // Send AJAX request
+        fetch('/Account/ForgotPassword', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            // Check for validation errors
+            if (data.forgotEmailError) {
+                document.getElementById('forgotEmailError').textContent = data.forgotEmailError;
+            }
+            if (data.forgotPasswordError) {
+                document.getElementById('forgotPasswordError').textContent = data.forgotPasswordError;
+            }
+            if (data.forgotConfirmPasswordError) {
+                document.getElementById('forgotConfirmPasswordError').textContent = data.forgotConfirmPasswordError;
+            }
+
+            // If success, store the success message and redirect
+            if (data.success) {
+                // Close modal
+                bootstrap.Modal.getInstance(document.getElementById('authModal')).hide();
+
+                // Store the message in localStorage before redirecting
+                localStorage.setItem('pendingToasts', JSON.stringify([{
+                    message: data.success,
+                    type: 'success'
+                }]));
+
+                // Redirect to the specified URL
+                window.location.href = data.redirect;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+</script>

@@ -1,0 +1,562 @@
+﻿@model List<PBL3_DUTLibrary.ViewModels.AdminWebUserListViewModel>
+@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "User Management";
+    var defaultAvatar = "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp";
+}
+
+<div class="main-container">
+    <div class="pd-ltr-20">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="title">
+                        <h4>User Management</h4>
+                    </div>
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Users</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-6 col-sm-12 text-right">
+                    <button class="btn btn-primary btn-rounded" type="button" id="add-user-btn">
+                        <i class="icon-copy fa fa-plus-circle mr-1"></i> New User
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- User Stats -->
+        <div class="row pb-10">
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-primary font-weight-bold">@ViewBag.TotalUserCount</div>
+                            <div class="weight-600 font-14 text-muted">Total Users</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(0, 123, 255, 0.1);"><span class="icon-copy fa fa-users text-primary"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-success font-weight-bold">@ViewBag.ActiveUserCount</div>
+                            <div class="weight-600 font-14 text-muted">Active Users</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(40, 167, 69, 0.1);"><span class="icon-copy fa fa-user-check text-success"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-danger font-weight-bold">@ViewBag.InactiveUserCount</div>
+                            <div class="weight-600 font-14 text-muted">Inactive Users</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(220, 53, 69, 0.1);"><span class="icon-copy fa fa-user-times text-danger"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-warning font-weight-bold">@ViewBag.UsersWithActiveBorrows</div>
+                            <div class="weight-600 font-14 text-muted">Users with Borrows</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(255, 193, 7, 0.1);"><span class="icon-copy fa fa-book text-warning"></span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Additional Statistics -->
+        <div class="row pb-10">
+            <div class="col-xl-8 col-lg-8 mb-20">
+                <div class="card-box height-100-p pd-20 bg-white">
+                    <div class="d-flex justify-content-between pb-10">
+                        <h4 class="h4 text-blue">User Statistics</h4>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6 col-md-6 mb-20">
+                            <div class="d-flex bg-light p-3 rounded">
+                                <div class="mr-4 align-self-center text-danger" style="font-size: 24px;">
+                                    <i class="icon-copy fa fa-user-shield"></i>
+                                </div>
+                                <div>
+                                    <div class="font-14 text-muted mb-1">Administrators</div>
+                                    <div class="h4 mb-0 font-weight-bold">@ViewBag.AdminCount</div>
+                                    <div class="small text-muted">@(Math.Round((double)ViewBag.AdminCount / ViewBag.TotalUserCount * 100, 1))% of users</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 mb-20">
+                            <div class="d-flex bg-light p-3 rounded">
+                                <div class="mr-4 align-self-center text-info" style="font-size: 24px;">
+                                    <i class="icon-copy fa fa-user"></i>
+                                </div>
+                                <div>
+                                    <div class="font-14 text-muted mb-1">Regular Users</div>
+                                    <div class="h4 mb-0 font-weight-bold">@ViewBag.RegularUserCount</div>
+                                    <div class="small text-muted">@(Math.Round((double)ViewBag.RegularUserCount / ViewBag.TotalUserCount * 100, 1))% of users</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 mb-20">
+                            <div class="d-flex bg-light p-3 rounded">
+                                <div class="mr-4 align-self-center text-warning" style="font-size: 24px;">
+                                    <i class="icon-copy fa fa-bookmark"></i>
+                                </div>
+                                <div>
+                                    <div class="font-14 text-muted mb-1">Users with Active Borrows</div>
+                                    <div class="h4 mb-0 font-weight-bold">@ViewBag.UsersWithActiveBorrows</div>
+                                    <div class="small text-muted">@(Math.Round((double)ViewBag.UsersWithActiveBorrows / ViewBag.TotalUserCount * 100, 1))% of users</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6 col-md-6 mb-20">
+                            <div class="d-flex bg-light p-3 rounded">
+                                <div class="mr-4 align-self-center text-danger" style="font-size: 24px;">
+                                    <i class="icon-copy fa fa-exclamation-circle"></i>
+                                </div>
+                                <div>
+                                    <div class="font-14 text-muted mb-1">Users with Overdue Items</div>
+                                    <div class="h4 mb-0 font-weight-bold">@ViewBag.UsersWithOverdueItems</div>
+                                    <div class="small text-muted">@(Math.Round((double)ViewBag.UsersWithOverdueItems / ViewBag.TotalUserCount * 100, 1))% of users</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-4 col-lg-4 mb-20">
+                <div class="card-box height-100-p pd-20 bg-white">
+                    <h4 class="h4 text-blue mb-15">Newest Members</h4>
+                    <div class="user-list">
+                        @if (ViewBag.RecentUsers != null && ViewBag.RecentUsers.Count > 0)
+                        {
+                            foreach (dynamic user in ViewBag.RecentUsers)
+                            {
+                                <div class="d-flex align-items-center justify-content-between mb-2 pb-2 border-bottom">
+                                    <div class="d-flex align-items-center">
+                                        <img src="@(string.IsNullOrEmpty(user.Image) ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp" : user.Image)"
+                                             width="40" height="40" alt="@user.Username" class="rounded-circle shadow-sm mr-2">
+                                        <div>
+                                            <div class="font-14 font-weight-bold">@user.Username</div>
+                                            <div class="font-12 text-muted">@(string.IsNullOrEmpty(user.RealName) ? "-" : user.RealName)</div>
+                                        </div>
+                                    </div>
+                                    <span class="badge @(user.Role == "Admin" ? "badge-danger" : "badge-info")">@user.Role</span>
+                                </div>
+                            }
+                        }
+                        else
+                        {
+                            <div class="text-center text-muted py-3">No recent users found</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Users Data Table -->
+        <div class="card-box mb-30">
+            <div class="pd-20">
+                <h4 class="text-blue h4"><i class="icon-copy dw dw-user-2 mr-2"></i>User Accounts</h4>
+            </div>
+            <div class="px-4 pb-3">
+                <form id="filter-form" method="get" asp-action="Index">
+                    <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+                    <input type="hidden" name="sortOrder" value="@ViewBag.CurrentSort" />
+                    <div class="row justify-content-between align-items-center">
+                        <div class="col-md-auto mb-2">
+                            <div class="dataTables_length">
+                                <label class="d-flex align-items-center font-14">
+                                    <span class="mr-1">Show</span>
+                                    <select name="pageSize" class="custom-select custom-select-sm form-control form-control-sm mx-2" style="min-width: 70px;" onchange="$('#filter-form').submit();">
+                                        @{
+                                            var pageSizes = new[] { 10, 25, 50 };
+                                            foreach (var size in pageSizes)
+                                            {
+                                                if (ViewBag.PageSize == size)
+                                                {
+                                                    <option value="@size" selected>@size</option>
+                                                }
+                                                else
+                                                {
+                                                    <option value="@size">@size</option>
+                                                }
+                                            }
+                                        }
+                                    </select>
+                                    <span>entries</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-md-auto mb-2">
+                            <select name="roleFilter" class="custom-select custom-select-sm form-control form-control-sm" style="min-width: 150px;" onchange="$('#filter-form').submit();">
+                                <option value="">All Roles</option>
+                                @foreach (var role in (List<string>)ViewBag.AvailableRoles)
+                                {
+                                    if (ViewBag.CurrentRoleFilter == role)
+                                    {
+                                        <option value="@role" selected>@role</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@role">@role</option>
+                                    }
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-auto mt-2 mt-md-0">
+                            <div class="input-group input-group-sm">
+                                <input type="text" name="searchQuery" class="form-control form-control-sm" placeholder="Search users..." value="@ViewBag.SearchQuery" style="min-width: 250px;">
+                                <div class="input-group-append">
+                                    <button class="btn btn-sm btn-primary" type="submit"><i class="icon-copy dw dw-search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="pb-20">
+                <table class="table nowrap hover data-table-responsive" style="width:100%">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="table-plus">Avatar</th>
+                            <th>
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.UsernameSortParm, searchQuery = ViewBag.SearchQuery, roleFilter = ViewBag.CurrentRoleFilter, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    Username <i class="fa @(ViewBag.CurrentSort == "username_desc" ? "fa-sort-alpha-down" : (ViewBag.CurrentSort == "" || ViewBag.CurrentSort == null ? "fa-sort-alpha-up" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.RealNameSortParm, searchQuery = ViewBag.SearchQuery, roleFilter = ViewBag.CurrentRoleFilter, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    Full Name <i class="fa @(ViewBag.CurrentSort == "realname_asc" ? "fa-sort-alpha-up" : (ViewBag.CurrentSort == "realname_desc" ? "fa-sort-alpha-down" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.EmailSortParm, searchQuery = ViewBag.SearchQuery, roleFilter = ViewBag.CurrentRoleFilter, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    Email <i class="fa @(ViewBag.CurrentSort == "email_asc" ? "fa-sort-amount-up" : (ViewBag.CurrentSort == "email_desc" ? "fa-sort-amount-down" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th>Phone</th>
+                            <th>
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.RoleSortParm, searchQuery = ViewBag.SearchQuery, roleFilter = ViewBag.CurrentRoleFilter, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    Role <i class="fa @(ViewBag.CurrentSort == "role_asc" ? "fa-sort-amount-up" : (ViewBag.CurrentSort == "role_desc" ? "fa-sort-amount-down" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th style="min-width: 140px;">Borrows</th>
+                            <th>Status</th>
+                            <th class="datatable-nosort text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            foreach (var user in Model)
+                            {
+                                <tr>
+                                    <td class="table-plus">
+                                        <img src="@(string.IsNullOrEmpty(user.Image) ? defaultAvatar : user.Image)"
+                                             width="50" height="50" alt="@user.Username" class="rounded-circle shadow-sm"
+                                             onerror="this.onerror=null; this.src='@defaultAvatar';">
+                                    </td>
+                                    <td><strong class="text-primary">@user.Username</strong></td>
+                                    <td>@user.RealName</td>
+                                    <td>@user.Email</td>
+                                    <td>
+                                        @if (user.Sdt.HasValue)
+                                        {
+                                            <text>@string.Format("{0:0#######}", user.Sdt.Value)</text>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.Role == "Admin")
+                                        {
+                                            <span class="badge badge-danger">@user.Role</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-info">@user.Role</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <span class="badge badge-primary mr-1" style="display: inline-block; margin-right: 8px">@user.BorrowCount total</span>
+                                        @if (user.ActiveBorrowCount > 0)
+                                        {
+                                            <span style="display: inline-block" class="badge badge-warning">@user.ActiveBorrowCount active</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (user.Status == true)
+                                        {
+                                            <span class="badge badge-success badge-pill">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge badge-danger badge-pill">Inactive</span>
+                                        }
+                                    </td>
+                                    <td class="text-center">
+                                        <div class="dropdown">
+                                            <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                                <i class="dw dw-more"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                                <a class="dropdown-item view-user" href="#" data-id="@user.UserId"><i class="dw dw-eye"></i> View</a>
+                                                <a class="dropdown-item edit-user" href="#" data-id="@user.UserId"><i class="dw dw-edit2"></i> Edit</a>
+                                                <a class="dropdown-item delete-user" href="#" data-id="@user.UserId"><i class="dw dw-delete-3"></i> Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr><td colspan="9" class="text-center py-4">No users found.</td></tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                @if (ViewBag.TotalPages > 1)
+                {
+                    <div class="row mt-3 px-4">
+                        <div class="col-sm-12 col-md-5">
+                            <div class="dataTables_info font-14">
+                                Showing @(((ViewBag.CurrentPage - 1) * ViewBag.PageSize) + 1)
+                                to @(Math.Min(ViewBag.CurrentPage * ViewBag.PageSize, ViewBag.TotalUsers))
+                                of @ViewBag.TotalUsers entries
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-7">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination justify-content-end mb-0">
+                                    @if (ViewBag.CurrentPage > 1)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery, sortOrder = ViewBag.CurrentSort, roleFilter = ViewBag.CurrentRoleFilter })">Previous</a></li>
+                                    }
+                                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                                    {
+                                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                            <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery, sortOrder = ViewBag.CurrentSort, roleFilter = ViewBag.CurrentRoleFilter })">@i</a>
+                                        </li>
+                                    }
+                                    @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                    {
+                                        <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery, sortOrder = ViewBag.CurrentSort, roleFilter = ViewBag.CurrentRoleFilter })">Next</a></li>
+                                    }
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-wrap pd-20 mb-20 card-box">DUTLibrary &copy; @DateTime.Now.Year</div>
+    </div>
+</div>
+
+<!-- Add/Edit User Modal -->
+<div class="modal fade bs-example-modal-lg" id="user-modal" tabindex="-1" role="dialog" aria-labelledby="user-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title" id="user-modal-label">Add New User</h4>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body pb-0">
+                <form id="user-form" enctype="multipart/form-data">
+                    <input type="hidden" id="UserId" name="UserId" value="0">
+
+                    <div class="row">
+                        <!-- Left Column: Account Information -->
+                        <div class="col-md-7">
+                            <div class="card-box p-3 mb-3">
+                                <h5 class="text-primary mb-3"><i class="icon-copy fa fa-user-circle mr-2"></i>Account Information</h5>
+
+                                <div class="form-group">
+                                    <label for="Username"><i class="icon-copy fa fa-user text-primary mr-1"></i> Username <span class="text-danger">*</span></label>
+                                    <input type="text" class="form-control" id="Username" name="Username" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Email"><i class="icon-copy fa fa-envelope text-primary mr-1"></i> Email Address <span class="text-danger">*</span></label>
+                                    <input type="email" class="form-control" id="Email" name="Email" required>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Role"><i class="icon-copy fa fa-shield text-primary mr-1"></i> Role <span class="text-danger">*</span></label>
+                                            <select class="form-control" id="Role" name="Role" required>
+                                                @foreach (var role in (List<string>)ViewBag.AvailableRoles)
+                                                {
+                                                    <option value="@role">@role</option>
+                                                }
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="Status"><i class="icon-copy fa fa-toggle-on text-primary mr-1"></i> Status</label>
+                                            <select class="form-control" id="Status" name="Status">
+                                                <option value="true" selected>Active</option>
+                                                <option value="false">Inactive</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="password-section">
+                                    <h5 class="text-primary mt-4 mb-3"><i class="icon-copy fa fa-lock mr-2"></i>Password</h5>
+
+                                    <div class="form-group">
+                                        <label for="Password">Password <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light"><i class="icon-copy fa fa-key"></i></span>
+                                            </div>
+                                            <input type="password" class="form-control" id="Password" name="Password">
+                                        </div>
+                                        <small class="form-text text-muted" id="password-help">For new users, password is required</small>
+                                    </div>
+
+                                    <div class="form-group" id="confirm-password-section">
+                                        <label for="ConfirmPassword">Confirm Password <span class="text-danger">*</span></label>
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text bg-light"><i class="icon-copy fa fa-check"></i></span>
+                                            </div>
+                                            <input type="password" class="form-control" id="ConfirmPassword" name="ConfirmPassword">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Profile & Image -->
+                        <div class="col-md-5">
+                            <div class="card-box p-3 mb-3">
+                                <h5 class="text-primary mb-3"><i class="icon-copy fa fa-id-card mr-2"></i>Personal Details</h5>
+
+                                <div class="form-group">
+                                    <label for="RealName"><i class="icon-copy fa fa-address-card text-primary mr-1"></i> Full Name</label>
+                                    <input type="text" class="form-control" id="RealName" name="RealName">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="Sdt"><i class="icon-copy fa fa-phone text-primary mr-1"></i> Phone Number</label>
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text bg-light">+84</span>
+                                        </div>
+                                        <input type="tel" class="form-control" id="Sdt" name="Sdt" placeholder="Optional">
+                                    </div>
+                                </div>
+
+                                <div class="form-group mt-4">
+                                    <label for="UserImage"><i class="icon-copy fa fa-image text-primary mr-1"></i> Profile Image</label>
+                                    <div class="custom-file mb-2">
+                                        <input type="file" class="custom-file-input" id="UserImage" name="UserImage" accept="image/*">
+                                        <label class="custom-file-label" for="UserImage">Choose file</label>
+                                    </div>
+                                    <div class="text-center p-3 bg-light rounded border">
+                                        <img id="image-preview" src="@defaultAvatar" class="img-fluid rounded-circle shadow-sm" style="height: 150px; width: 150px; object-fit: cover;" alt="Image Preview">
+                                    </div>
+                                    <input type="hidden" id="ExistingImage" name="ExistingImage">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="icon-copy fa fa-times mr-1"></i> Cancel</button>
+                <button type="button" class="btn btn-primary" id="save-user"><i class="icon-copy fa fa-save mr-1"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- User Details Modal -->
+<div class="modal fade" id="details-modal" tabindex="-1" role="dialog" aria-labelledby="details-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h4 class="modal-title" id="details-modal-label"><i class="icon-copy fa fa-user-circle mr-2"></i>User Details</h4>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body p-0" id="details-modal-body">
+                <!-- Loading indicator shown initially -->
+                <div class="text-center py-5">
+                    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+                        <span class="sr-only">Loading...</span>
+                    </div>
+                    <p class="mt-3 text-muted font-16">Loading user details...</p>
+                </div>
+                <!-- Content will be loaded dynamically by JavaScript -->
+            </div>
+            <div class="modal-footer bg-light">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="icon-copy fa fa-times mr-1"></i> Close
+                </button>
+                <button type="button" class="btn btn-primary edit-from-details" style="display:none;">
+                    <i class="icon-copy fa fa-edit mr-1"></i> Edit User
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title"><i class="icon-copy fa fa-exclamation-triangle mr-2"></i>Confirm Deletion</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="icon-box mx-auto mb-4" style="font-size: 3.5rem; color: #dc3545;">
+                    <i class="icon-copy fa fa-trash-o"></i>
+                </div>
+                <h4 class="mb-4">Are you sure you want to delete this user?</h4>
+                <p class="text-danger font-weight-bold">This action cannot be undone!</p>
+                <p class="text-muted small">All user data will be permanently removed from the system.</p>
+            </div>
+            <div class="modal-footer justify-content-center border-0">
+                <button type="button" class="btn btn-light btn-lg px-4" data-dismiss="modal">
+                    <i class="icon-copy fa fa-times mr-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-danger btn-lg px-4" id="confirm-delete">
+                    <i class="icon-copy fa fa-trash-o mr-1"></i> Delete
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/js/admin-users.js"></script>
+}

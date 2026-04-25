@@ -1,0 +1,8 @@
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.GeneratedMSBuildEditorConfig.editorconfig
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.AssemblyInfoInputs.cache
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.AssemblyInfo.cs
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.csproj.CoreCompileInputs.cache
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.MvcApplicationPartsAssemblyInfo.cache
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.RazorAssemblyInfo.cache
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.RazorAssemblyInfo.cs
+C:\coding\.Net\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary_2.csproj.AssemblyReference.cache

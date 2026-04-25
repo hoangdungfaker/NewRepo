@@ -1,0 +1,114 @@
+﻿@using PBL3_DUTLibrary.ViewModels;
+@model BorrowBookViewModel;
+
+<style>
+    .mainbody {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .mycontainer {
+        background: white;
+        padding: 25px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 1000px;
+        width: 100%;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+    .buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 48%;
+    }
+
+    .confirm-btn {
+        background-color: #DBCC8F;
+        color: white;
+    }
+
+    .cancel-btn {
+        background-color: #000000;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+<div class="mainbody">
+
+    <div class="mycontainer">
+        <h2>Borrow Confirmation</h2>
+        <form asp-action="BorrowBook" asp-controller="Dashboard" method="post">
+            <input asp-for="Id" hidden />
+            <div class="form-group">
+                <label for="@Model.Title">Title</label>
+                <input id="@Model.Title" type="text" asp-for="@Model.Title" readonly>
+            </div>
+            <div class="form-group">
+                <label for="@Model.Author">Author</label>
+                <input id="@Model.Author" type="text" asp-for="@Model.Author" readonly>
+            </div>
+            <div class="form-group">
+                @{
+                    var datenow = DateTime.Now.Date.ToString("d/M/yyyy");
+                }
+                <label for="@Model.Title">Borrow Date</label>
+                <input type="text" value="@datenow" readonly>
+            </div>
+            <div class="form-group">
+                @{
+                    var datereturn = DateTime.Now.Date.AddDays(10).ToString("d/M/yyyy");
+                }
+                <label for="@Model.Title">Return date</label>
+                <input id="@Model.Title" value="@datereturn" readonly>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn confirm-btn">Confirm</button>
+                <a type="button" class="btn cancel-btn" asp-controller="Books" asp-action="DetailBooks" asp-route-id="@Model.Id">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</div>

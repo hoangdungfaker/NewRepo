@@ -1,0 +1,94 @@
+﻿@model IEnumerable<PBL3_DUTLibrary.ViewModels.MenuLoaiVM>
+@{
+    var selectedGenres = Context.Request.Query["loai"].ToList();
+}
+<div class="sidebar">
+    <div class="sidebar-box-2">
+        <h2 class="heading">Thể loại</h2>
+        <div class="fancy-collapse-panel">
+            <div class="panel-group" role="tablist" aria-multiselectable="true">
+                @foreach (var item in Model.OrderByDescending(x => selectedGenres.Contains(x.TenLoai)))
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-heading" role="tab" id="headingTwo">
+                            <h4 class="panel-title">
+                                <a asp-controller="Books" asp-action="Index" asp-route-loai="@GetUpdatedGenres(selectedGenres, item.TenLoai)" class="collapsed category-link @(selectedGenres.Contains(item.TenLoai) ? "active" : "")" data-loai="@item.TenLoai">
+                                    @item.TenLoai (@item.SoLuong)
+                                </a>
+                            </h4>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+@functions {
+    // Hàm thêm/bớt thể loại vào danh sách đã chọn
+    public string GetUpdatedGenres(List<string> currentGenres, string clickedGenre)
+    {
+        var updatedGenres = new List<string>(currentGenres);
+        if (updatedGenres.Contains(clickedGenre))
+        {
+            updatedGenres.Remove(clickedGenre);
+        }
+        else
+        {
+            updatedGenres.Add(clickedGenre);
+        }
+        return string.Join(",", updatedGenres);
+    }
+}
+<style>
+    .category-link.active {
+        color: #007bff;
+        font-weight: bold;
+    }
+</style>
+
+<script>
+        document.querySelectorAll(".category-link").forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngừng hành động mặc định
+
+            // Lấy thể loại đang được click
+            var clickedGenre = this.getAttribute('data-loai');
+
+            // Lấy danh sách thể loại hiện tại từ URL
+            var urlParams = new URLSearchParams(window.location.search);
+            var currentGenres = urlParams.getAll('loai'); // Lấy tất cả giá trị 'loai' (nếu có)
+
+            // Nếu thể loại đã có trong danh sách thì loại bỏ, ngược lại thì thêm vào
+            var updatedGenres;
+            if (currentGenres.includes(clickedGenre)) {
+                updatedGenres = currentGenres.filter(g => g !== clickedGenre);
+            } else {
+                updatedGenres = [...currentGenres, clickedGenre];
+            }
+
+            // Tạo URL mới với danh sách thể loại đã cập nhật
+            var newUrl = '/Books/Index';
+            if (updatedGenres.length > 0) {
+                newUrl += '?loai=' + updatedGenres.map(encodeURIComponent).join('&loai=');
+            }
+
+            // Chuyển hướng đến URL mới
+            window.location.href = newUrl;
+        });
+    });
+
+    // Đánh dấu thể loại đã chọn khi tải trang
+    window.onload = function() {
+        var urlParams = new URLSearchParams(window.location.search);
+        var selectedGenres = urlParams.getAll('loai');
+
+        document.querySelectorAll('.category-link').forEach(function(link) {
+            var genre = link.getAttribute('data-loai');
+            if (selectedGenres.includes(genre)) {
+                link.classList.add('active');
+            } else {
+                link.classList.remove('active');
+            }
+        });
+    };
+</script>

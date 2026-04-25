@@ -1,0 +1,48 @@
+﻿@model PBL3_DUTLibrary.ViewModels.AdminNotificationViewModel
+
+@if (Model.NewBorrowRequests != null && Model.NewBorrowRequests.Any())
+{
+    <div class="notification-section">
+        <h4 class="section-title">New Borrow Requests</h4>
+        <ul>
+            @foreach (var borrow in Model.NewBorrowRequests.Take(5))
+            {
+                <li>
+                    <a asp-controller="Admin" asp-action="BorrowReturn">
+                        <img src="@(borrow.User?.Image ?? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp")"
+                             alt="User Avatar">
+                        <h3>@(borrow.User?.RealName ?? borrow.User?.Username ?? "Unknown")</h3>
+                        <p>
+                            @(borrow.User?.Username ?? "Unknown")
+                            has sent a request to borrow books
+                        </p>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}
+
+<!-- Prolong Requests Section -->
+@if (Model.NewProlongRequests != null && Model.NewProlongRequests.Any())
+{
+    <div class="notification-section">
+        <h4 class="section-title">Book Renewal Requests</h4>
+        <ul>
+            @foreach (var prolong in Model.NewProlongRequests.Take(5))
+            {
+                <li>
+                    <a asp-controller="Admin" asp-action="BorrowReturn">
+                        <img src="@(prolong.Borrow?.User?.Image ?? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp")"
+                             alt="User Avatar">
+                        <h3>@(prolong.Borrow?.User?.RealName ?? prolong.Borrow?.User?.Username ?? "Unknown")</h3>
+                        <p>
+                            @(prolong.Borrow?.User?.Username ?? "Unknown")
+                            has sent a book renewal request
+                        </p>
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+}

@@ -1,0 +1,237 @@
+﻿@using PBL3_DUTLibrary.Models;
+@using PBL3_DUTLibrary.ViewModels;
+@model UserProfileViewModel;
+
+<section class="profile-section img-modify">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="profile-card">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <div class="sidebar">
+                                @{
+                                    var imageUrl = string.IsNullOrEmpty(Model.Image)
+                                    ? "https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp"
+                                    : Model.Image;
+                                }
+                                <img src="@imageUrl" alt="User Avatar" class="profile-image">
+                                <h4 class="username">@Model.Username</h4>
+
+                                <div class="mt-4 mb-3">
+                                    <a class="nav-link" asp-action="EditUserProfile" asp-controller="Dashboard">
+                                        <i class="fas fa-user-edit me-2"></i> Edit Profile
+                                    </a>
+                                    <a class="nav-link" asp-action="ForgotPasswordEmail" asp-controller="Account">
+                                        <i class="fas fa-key me-2"></i> Change Password
+                                    </a>
+                                    <a class="nav-link" href="#section-borrowing">
+                                        <i class="fas fa-book-reader me-2"></i> My Borrowings
+                                    </a>
+                                    <a class="nav-link" asp-controller="Cart" asp-action="Index">
+                                        <i class="fas fa-heart me-2"></i> My Wishlist
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="content-area">
+                                <h3 class="section-title">Personal Information</h3>
+                                <div class="divider"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="info-label">Email Address</div>
+                                        <div class="info-value">@Model.Email</div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="info-label">Phone Number</div>
+                                        <div class="info-value">@("0" + Model.Sdt.ToString())</div>
+                                    </div>
+                                </div>
+
+                                <h3 class="section-title mt-4">My Activity</h3>
+                                <div class="divider"></div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="activity-stat">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="info-label">Currently Borrowing</div>
+                                                    <div class="info-value mb-0">@Model.Borrowing.Count</div>
+                                                </div>
+                                                <i class="fas fa-book-open fa-2x text-muted"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="activity-stat">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <div class="info-label">Books in Wishlist</div>
+                                                    <div class="info-value mb-0">@Model.Books.Count</div>
+                                                </div>
+                                                <i class="fas fa-bookmark fa-2x text-muted"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="social-icons">
+                                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                                    <a href="#"><i class="fab fa-twitter"></i></a>
+                                    <a href="#"><i class="fab fa-instagram"></i></a>
+                                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+ <style>
+    .img-modify {
+        background-color: #f4f5f7;
+        background-image: url('@Url.Content("~/images/image-background-profile-1.jpg")') !important;
+        background-position: center !important;
+        background-repeat: no-repeat !important;
+        background-size: cover !important;
+        @* background-attachment: fixed; *@
+        position: relative;
+        overflow: hidden;
+    }
+
+    .profile-section {
+        padding: 30px 0;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+    }
+
+    .profile-card {
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        background: #fff;
+    }
+
+    .sidebar {
+        background: linear-gradient(135deg, #ff9966 0%, #ff5e62 100%);
+        height: 100%;
+        padding: 30px 15px;
+        text-align: center;
+        position: relative;
+    }
+
+    .profile-image {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 5px solid rgba(255,255,255,0.3);
+        object-fit: cover;
+        margin-bottom: 15px;
+    }
+
+    .username {
+        color: white;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    .nav-link {
+        color: rgba(255,255,255,0.8);
+        transition: all 0.3s;
+        font-size: 14px;
+        display: block;
+        margin-bottom: 8px;
+        text-decoration: none;
+    }
+
+        .nav-link:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+
+    .content-area {
+        padding: 30px;
+    }
+
+    .section-title {
+        color: #495057;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 15px;
+    }
+
+    .divider {
+        height: 1px;
+        background: #e9ecef;
+        margin: 15px 0 20px;
+    }
+
+    .info-label {
+        color: #6c757d;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 5px;
+    }
+
+    .info-value {
+        color: #212529;
+        font-size: 16px;
+        margin-bottom: 20px;
+    }
+
+    .activity-stat {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 15px;
+        transition: all 0.3s;
+    }
+
+        .activity-stat:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+    .social-icons {
+        margin-top: 25px;
+    }
+
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: #f1f3f5;
+            border-radius: 50%;
+            color: #6c757d;
+            margin-right: 10px;
+            transition: all 0.3s;
+        }
+
+            .social-icons a:hover {
+                background: #e9ecef;
+                color: #212529;
+                transform: translateY(-3px);
+            }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.hash) {
+            const target = document.querySelector(window.location.hash)
+            if (target) {
+                setTimeout(()  ={
+                    target.scrollIntoView({ behavior: 'smooth' })
+                }, 100)
+            }
+        }
+    })
+</script>

@@ -1,0 +1,95 @@
+﻿@* @model IEnumerable<PBL3_DUTLibrary.Models.Book> *@
+@model X.PagedList.IPagedList<PBL3_DUTLibrary.Models.Book>
+
+@{
+	ViewData["Title"] = "Book";
+	// Layout = "_DanhSachHangHoa";
+}
+
+@* @section BreadCum { *@
+@await Html.PartialAsync("_BreadCum")
+
+<section class="ftco-section bg-light">
+	@await Html.PartialAsync("SearchPanel")
+	<div class="container">
+		<div class="row">
+			<div class="col-md-8 col-lg-10 order-md-last">
+				<div class="row">
+					@await Html.PartialAsync("BooksItem", Model)
+				</div>
+				<div class="row mt-5">
+					<div class="col text-center">
+						<div class="block-27">
+							@{
+								int maxPagesAroundCurrent = 2;
+								int startPage = Model.PageNumber - maxPagesAroundCurrent;
+								int endPage = Model.PageNumber + maxPagesAroundCurrent;
+
+								if (startPage < 1) startPage = 1;
+								if (endPage > Model.PageCount) endPage = Model.PageCount;
+							}
+							<ul>
+								@if (Model.HasPreviousPage)
+								{
+									<li>
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = 1})">&lt;&lt;</a>
+									</li>
+									<li>
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = Model.PageNumber - 1 })">&lt;</a>
+									</li>
+								}
+
+								@if (startPage > 1)
+								{
+									<li>
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = 1 })">1</a> 
+									</li>
+									@if(startPage > 2)
+									{
+										<li class="disabled">
+											<span>...</span>
+										</li>
+									}
+								}
+
+								@for (int i = startPage; i <= endPage; i++)
+								{
+									<li class="@(i == Model.PageNumber ? "active" : "")">
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = i})">@i</a>
+									</li>
+								}
+
+								@if(endPage < Model.PageCount)
+								{
+									@if (endPage < Model.PageCount - 1)
+									{
+										<li class="disabled">
+											<span>...</span>
+										</li>
+									}
+									<li>
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = Model.PageCount })">@Model.PageCount</a>
+									</li>
+								}
+
+								@if (Model.HasNextPage)
+								{
+									<li>
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = Model.PageNumber + 1})">&gt;</a>
+									</li>
+									<li>
+										<a href="@Url.Action("Index", new { loai = ViewBag.Loai, page = Model.PageCount })">&gt;&gt;</a>
+									</li>
+								}
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-md-4 col-lg-2">
+				@await Component.InvokeAsync("ListGenreBooks")
+			</div>
+		</div>
+	</div>
+</section>

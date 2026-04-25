@@ -1,0 +1,95 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|d:\\database\\pbl3_dutlibrary_2\\pbl3_dutlibrary_2\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|d:\\database\\pbl3_dutlibrary_2\\pbl3_dutlibrary_2\\data\\librarycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:data\\librarycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|d:\\database\\pbl3_dutlibrary_2\\pbl3_dutlibrary_2\\controllers\\principlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:controllers\\principlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|d:\\database\\pbl3_dutlibrary_2\\pbl3_dutlibrary_2\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{c6f34f0d-7ae5-4f3a-be61-fe0c21ae9eb8}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAB+AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-04-25T06:27:37.803Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:128:0:{75188d03-9892-4ae2-abf1-207126247ce5}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-25T06:21:56.375Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "LibraryContext.cs",
+              "DocumentMoniker": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\Data\\LibraryContext.cs",
+              "RelativeDocumentMoniker": "Data\\LibraryContext.cs",
+              "ToolTip": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\Data\\LibraryContext.cs",
+              "RelativeToolTip": "Data\\LibraryContext.cs",
+              "ViewState": "AgIAACkAAAAAAAAAAAAmwC8AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-25T06:21:56.55Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "PrincipleController.cs",
+              "DocumentMoniker": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\Controllers\\PrincipleController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PrincipleController.cs",
+              "ToolTip": "D:\\database\\PBL3_DUTLibrary_2\\PBL3_DUTLibrary_2\\Controllers\\PrincipleController.cs",
+              "RelativeToolTip": "Controllers\\PrincipleController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAuwAIAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-04-25T06:21:56.55Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

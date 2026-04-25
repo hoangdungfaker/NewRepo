@@ -1,0 +1,79 @@
+﻿@model List<long>
+@using System.Text.Json
+@{
+    var revenueData = ViewBag.RevenueData as List<long> ?? new List<long> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+}
+<script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+<section class="py-3 py-md-5">
+    <div class="container" style="max-width: 100%;">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-9 col-xl-8 col-xxl-7" style="min-width: 100%; padding: 0;">
+                <div class="card widget-card border-light shadow-sm">
+                    <div class="card-body p-4">
+                        <h5 class="card-title widget-card-title mb-3">Total monthly revenue</h5>
+                        <div id="bsb-chart-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var revenueData = @Html.Raw(JsonSerializer.Serialize(revenueData));
+
+        var options = {
+            series: [{
+                    name: 'Total revenue',
+                data: revenueData
+            }],
+            chart: {
+                type: 'bar',
+                height: 350,
+                toolbar: { show: false }
+            },
+            colors: ['#45C8FF'],
+            plotOptions: {
+                bar: {
+                    horizontal: false,
+                    columnWidth: '40%',
+                    borderRadius: 6
+                }
+            },
+            dataLabels: {
+                enabled: false,
+                // formatter: function (val) {
+                //     return val.toLocaleString('vi-VN') + ' ₫';
+                // },
+                // style: {
+                //     fontSize: '14px'
+                // }
+            },
+            xaxis: {
+                categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+            },
+                yaxis: {
+        title: { text: 'VND' },
+        labels: {
+            formatter: function (val) {
+                return val.toLocaleString('vi-VN') + ' ₫';
+            }
+        },
+        min: 0,
+        max: 5000000,
+        tickAmount: 10
+    },
+            tooltip: {
+                y: {
+                    formatter: function (val) {
+                        return val.toLocaleString('vi-VN') + ' ₫';
+                    }
+                }
+            }
+        };
+
+        var chart = new ApexCharts(document.querySelector("#bsb-chart-3"), options);
+        chart.render();
+    });
+</script>

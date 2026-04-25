@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\buildMultiTargeting\PBL3_DUTLibrary.props" />
+</Project>

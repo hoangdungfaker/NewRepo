@@ -1,0 +1,83 @@
+﻿/* Library_Management.styles.css */
+/* Định nghĩa ảnh nền cho toàn trang */
+body {
+    background: url('/images/cửa sổ.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Xóa outline & box-shadow khi button được focus */
+.btn:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Tùy chỉnh thẻ card */
+.card {
+    background: rgba(255, 255, 255, 0.95);
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    /* Gradient chuyển từ sắc tối sang sắc nhạt (bỏ cam vàng) */
+    background: linear-gradient(45deg, #2F4F4F, #666);
+}
+
+/* Hiệu ứng cho nút và input */
+.btn {
+    border-radius: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+    .btn:hover {
+        transform: scale(1.05);
+    }
+
+/* Phối màu chủ đề: chỉ dùng trắng và xanh lá, các phần nền đều transparent để hiển thị ảnh nền */
+.navbar, .footer {
+    background-color: transparent;
+}
+
+.navbar-brand, .nav-link, .footer-text {
+    color: #fff;
+}
+
+    .nav-link:hover {
+        color: #28a745;
+    }
+
+/* Style cho input khi focus */
+.form-control:focus {
+    border-color: #28a745;
+    box-shadow: 0 0 8px rgba(92, 184, 92, 0.5);
+}
+
+/* Link: xóa màu xanh dương mặc định, chuyển thành màu kế thừa */
+a {
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+    a:hover {
+        color: #28a745;
+    }
+
+/* Footer: ẩn các liên kết không mong muốn */
+.footer {
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 0.9rem;
+}
+
+    .footer a {
+        display: none;
+    }
+
+/* Vùng chứa ảnh cho modal login/sign up */
+.image-container {
+    background-color: #2F4F4F; /* màu nền fallback cho ảnh */
+}

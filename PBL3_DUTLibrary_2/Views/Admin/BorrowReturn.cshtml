@@ -1,0 +1,755 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+@using PBL3_DUTLibrary.Models;
+@using PBL3_DUTLibrary.ViewModels;
+@model BorrowReturnViewModel;
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+
+
+
+<div class="main-container">
+	@* 	<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div> *@
+	<div class="pd-ltr-20">
+		<!-- Page Header -->
+		<div class="page-header">
+			<div class="row">
+				<div class="col-md-6 col-sm-12">
+					<div class="title">
+						<h4>User Management</h4>
+					</div>
+					<nav aria-label="breadcrumb" role="navigation">
+						<ol class="breadcrumb">
+							<li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Home</a></li>
+							<li class="breadcrumb-item active" aria-current="page">BorrowReturn</li>
+						</ol>
+					</nav>
+				</div>
+				@* 			<div class="col-md-6 col-sm-12 text-right">
+				<button class="btn btn-primary btn-rounded" type="button" id="add-user-btn">
+					<i class="icon-copy fa fa-plus-circle mr-1"></i> New User
+				</button>
+			</div> *@
+			</div>
+		</div>
+	</div>
+	<div class="search">
+		<form asp-action="BorrowSearch" asp-controller="Admin">
+			<div class="form-group mb-0 search-panel">
+				<i class="dw dw-search2 search-icon"></i>
+				<input type="text" class="form-control search-input" id="seach-bar" name="query" placeholder="Search Here (Book or User)" width="85%">
+				<div class="text-right">
+					<button class="btn btn-primary">Search</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="mycontainer">
+		<h2 class="display-4 fw-normal">Borrowing List</h2>
+		<br />
+		<button id="filterBtn" style="margin-top: 10px; margin-bottom:10px" class="btn btn-primary">Show Overdue</button>
+		<div class="table-container" style="max-height: 400px; overflow: auto;">
+			<table id="myTable" class="table table-striped table-bordered mb-0">
+				<thead>
+					<tr>
+						<th class="sortable-header" data-column="0" data-type="text">
+							User Email
+							<i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="1" data-type="text">
+							Book Title
+							<i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="2" data-type="date">
+							Borrowed Time
+							<i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="3" data-type="date">
+							Deadline
+							<i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="4" data-type="status">
+							Status
+							<i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th>Actions</th>
+						<th>Message</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- Sample data for demonstration -->
+					@foreach (var br in Model.uncompleted)
+					{
+						var start = br.Time.ToString("d/M/yyyy");
+						var end = br.Time.AddDays(br.Deadline).ToString("d/M/yyyy");
+						var status = br.Status == 0 ? "Not Received" : br.Status == 1 ? "Received" : "Overdue";
+						<tr data-status="@status">
+							<td>@br.User.Email</td>
+							<td>
+								<a asp-action="DetailBooks" asp-controller="Books" asp-route-id="@br.Book.BookId">@br.Book.Title</a>
+							</td>
+							<td>@start</td>
+							<td>@end</td>
+							<td>
+								@status
+								@{
+									if (br.Status == 2)
+									{
+										<i class="fa-solid fa-triangle-exclamation"></i>
+									}
+								}
+							</td>
+							<td style="text-align: center;">
+								@if (br.Status == 0)
+								{
+									<form id="DeliverForm" asp-action="ConfirmDeliver" asp-controller="Admin">
+										<input type="hidden" id="id" name="id" value="@br.BorrowId" />
+									</form>
+									<a class="btn btn-primary" route-id="@br.BorrowId" book-name="@br.Book.Title" onclick="showConfirm(this)">Delivered</a>
+								}
+								else if (br.Status == 1 || br.Status == 2)
+								{
+									<a class="btn btn-success" asp-controller="Admin" asp-action="ReturnBook" asp-route-id="@br.BorrowId">Return</a>
+								}
+							</td>
+							<td style="text-align: center;">
+								<button type="button"
+										class="btn btn-warning send-email-btn"
+										data-bs-toggle="modal"
+										data-bs-target="#emailModal"
+										data-email="@br.User.Email">
+									Message
+								</button>
+
+								<!-- Modal -->
+								<div class="modal fade" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<h5 class="modal-title" id="emailModalLabel">Send Email</h5>
+												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+											</div>
+											<div class="modal-body">
+												<form id="emailForm" asp-action="sendMail" asp-controller="Admin">
+													<input type="hidden" class="form-control" id="email" name="Email" value="@br.User.Email" required>
+													<div class="mb-3" style="text-align:left">
+														<label for="emailSubject" class="form-label">Subject</label>
+														<input type="text" class="form-control" id="emailSubject" name="Subject" required>
+													</div>
+													<div class="mb-3" style="text-align:left">
+														<label for="emailBody" class="form-label">Message</label>
+														<textarea class="form-control" id="emailBody" name="Message" required></textarea>
+													</div>
+												</form>
+											</div>
+											<div class="modal-footer">
+												<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+												<button type="button" class="btn btn-primary" onclick="sendEmail()">Send</button>
+											</div>
+										</div>
+									</div>
+								</div>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="mycontainer">
+		<h2 class="display-4 fw-normal">Returned List</h2>
+		<br />
+		<div class="table-container" style="max-height: 400px; overflow: auto;">
+			<table id="completedTable" class="table table-striped table-bordered">
+				<thead style="position: sticky; top: 0; background: white; z-index: 1;">
+					<tr>
+						<th class="sortable-header" data-column="0" data-type="text">
+							User Email <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="1" data-type="text">
+							Book Title <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="2" data-type="date">
+							Borrowed Time <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="3" data-type="date">
+							Deadline <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="4" data-type="date">
+							Returned Time <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="5" data-type="number">
+							Fee <i class="fas fa-sort sort-icon"></i>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var br in Model.completed)
+					{
+						var start = br.Time.ToString("d/M/yyyy");
+						var end = br.Time.AddDays(br.Deadline).ToString("d/M/yyyy");
+						var returned = br.ReturnedTime;
+						var returnString = returned == null ? "Null" : returned.Value.ToString("d/M/yyyy");
+						var fee = br.Fee == null ? 0 : br.Fee;
+						var feestring = string.Format("{0:N0}", fee);
+						<tr>
+							<td>@br.User.Email</td>
+							<td>
+								<a asp-action="DetailBooks" asp-controller="Books" asp-route-id="@br.Book.BookId">@br.Book.Title</a>
+							</td>
+							<td>@start</td>
+							<td>@end</td>
+							<td>@returnString</td>
+							<td>
+								@feestring
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="mycontainer">
+		<h2 class="display-4 fw-normal">UnCompleted Request</h2>
+		<br />
+		<div class="table-container" style="max-height: 400px; overflow: auto;">
+			<table id="completedTable2" class="table table-striped table-bordered">
+				<thead style="position: sticky; top: 0; background: white; z-index: 1;">
+					<tr>
+						<th class="sortable-header" data-column="0" data-type="text">
+							User Email <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="1" data-type="text">
+							Book Title <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="2" data-type="date">
+							Borrowed Time <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="3" data-type="date">
+							Deadline <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="4" data-type="number">
+							Prolong Time (Days) <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th>Reason</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var br in Model.uncompletedProlongRequests)
+					{
+						var start = br.Borrow.Time.ToString("d/M/yyyy");
+						var end = br.Borrow.Time.AddDays(br.Borrow.Deadline).ToString("d/M/yyyy");
+						<tr>
+							<td>@br.Borrow.User.Email</td>
+							<td>
+								<a asp-action="DetailBooks" asp-controller="Books" asp-route-id="@br.Borrow.Book.BookId">@br.Borrow.Book.Title</a>
+							</td>
+							<td>@start</td>
+							<td>@end</td>
+							<td>@br.Days</td>
+							<td>
+								@br.Reason
+							</td>
+							<td>
+								<form id="AcceptForm" asp-action="AcceptRequest" asp-controller="Admin">
+									<input type="hidden" id="id" name="id" value="@br.RequestId" />
+								</form>
+								<a class="btn btn-primary" route-id="@br.RequestId" onclick="showConfirm2(this)">Accept</a>
+							</td>
+							<td>
+								<form id="RejectForm" asp-action="RejectRequest" asp-controller="Admin">
+									<input type="hidden" id="id" name="id" value="@br.RequestId" />
+								</form>
+								<a class="btn btn-danger" route-id="@br.RequestId" onclick="showConfirm3(this)">Reject</a>
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="mycontainer">
+		<h2 class="display-4 fw-normal">Completed Request</h2>
+		<br />
+		<div class="table-container" style="max-height: 400px; overflow: auto;">
+			<table id="completedTable3" class="table table-striped table-bordered">
+				<thead style="position: sticky; top: 0; background: white; z-index: 1;">
+					<tr>
+						<th class="sortable-header" data-column="0" data-type="text">
+							User Email <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="1" data-type="text">
+							Book Title <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="2" data-type="date">
+							Borrowed Time <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="3" data-type="date">
+							Deadline <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th class="sortable-header" data-column="4" data-type="number">
+							Prolong Time (Days) <i class="fas fa-sort sort-icon"></i>
+						</th>
+						<th>Reason</th>
+						<th class="sortable-header" data-column="5" data-type="text">
+							Status <i class="fas fa-sort sort-icon"></i>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (var br in Model.completedProlongRequests)
+					{
+						var start = br.Borrow.Time.ToString("d/M/yyyy");
+						var end = br.Borrow.Time.AddDays(br.Borrow.Deadline).ToString("d/M/yyyy");
+						var status = br.Status == 1 ? "Accepted" : "Rejected";
+						<tr>
+							<td>@br.Borrow.User.Email</td>
+							<td>
+								<a asp-action="DetailBooks" asp-controller="Books" asp-route-id="@br.Borrow.Book.BookId">@br.Borrow.Book.Title</a>
+							</td>
+							<td>@start</td>
+							<td>@end</td>
+							<td>@br.Days</td>
+							<td>
+								@br.Reason
+							</td>
+							<td>
+								@status
+							</td>
+						</tr>
+					}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+	.search-panel {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.mycontainer {
+		margin-top: 30px;
+		background: white;
+		padding: 25px;
+		border-radius: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	@* max-width: 1500px; *@
+	width: 100%;
+	}
+
+	.table-container {
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+
+	.sortable-header {
+		cursor: pointer;
+		user-select: none;
+		position: relative;
+		padding-right: 25px !important;
+	}
+
+		.sortable-header:hover {
+			background-color: #f8f9fa;
+		}
+
+	.sort-icon {
+		position: absolute;
+		right: 8px;
+		top: 50%;
+		transform: translateY(-50%);
+		opacity: 0.5;
+		transition: opacity 0.2s;
+	}
+
+	.sortable-header:hover .sort-icon {
+		opacity: 1;
+	}
+
+	.sort-icon.active {
+		opacity: 1;
+		color: #0d6efd;
+	}
+
+	.status-overdue {
+		color: #dc3545;
+		font-weight: bold;
+	}
+
+	.status-received {
+		color: #198754;
+	}
+
+	.status-not-received {
+		color: #fd7e14;
+	}
+
+	thead th {
+		position: sticky;
+		top: 0;
+		background: white;
+		z-index: 10;
+		box-shadow: 0 2px 2px -1px rgba(0, 0, 0, 0.1);
+	}
+
+	.table-striped > tbody > tr:nth-of-type(odd) > td {
+		background-color: rgba(0, 0, 0, 0.025);
+	}
+
+	.fee-amount {
+		text-align: right;
+		font-family: 'Courier New', monospace;
+	}
+
+	/* Responsive adjustments */
+	@@media (max-width: 768px) {
+		.table-container {
+			max-height: 300px;
+		}
+	}
+</style>
+
+<script>
+	function confirmAction() {
+	var form = document.getElementById("DeliverForm");
+	if (confirm("Are you sure you want to deliver this book?")) {
+	form.submit();
+	}
+	}
+
+	async function showConfirm(element) {
+		const title = element.getAttribute("book-name");
+	const routeid = element.getAttribute("route-id");
+	var form = document.getElementById("DeliverForm");
+	const result = await Swal.fire({
+	title: 'Confirm Delivered',
+	text: "Do you want to confirm the book \" " + title + " \" has been handed to user?",
+	icon: 'warning',
+	showCancelButton: true,
+	confirmButtonColor: '#3085d6',
+	cancelButtonColor: '#d33',
+	confirmButtonText: 'Yes!'
+	});
+	if (result.isConfirmed) {
+		var idinput = form.querySelector("input[name='id']");
+		idinput.value = routeid;
+	return form.submit();
+	}
+	}
+
+	async function showConfirm2(element) {
+	const routeid = element.getAttribute("route-id");
+	var form = document.getElementById("AcceptForm");
+	const result = await Swal.fire({
+	title: 'Accept Request',
+	text: "Are you sure you want to accept this request ?",
+	icon: 'warning',
+	showCancelButton: true,
+	confirmButtonColor: '#3085d6',
+	cancelButtonColor: '#d33',
+	confirmButtonText: 'Yes!'
+	});
+
+	if (result.isConfirmed) {
+		var idinput = form.querySelector("input[name='id']");
+		idinput.value = routeid;
+	return form.submit();
+	}
+	}
+
+	async function showConfirm3(element) {
+	const routeid = element.getAttribute("route-id");
+	var form = document.getElementById("RejectForm");
+	const result = await Swal.fire({
+	title: 'Reject Request',
+	text: "Are you sure you want to reject this request ?",
+	icon: 'warning',
+	showCancelButton: true,
+	confirmButtonColor: '#3085d6',
+	cancelButtonColor: '#d33',
+	confirmButtonText: 'Yes!'
+	});
+
+	if (result.isConfirmed) {
+		var idinput = form.querySelector("input[name='id']");
+		idinput.value = routeid;
+	return form.submit();
+	}
+	}
+
+	function sendEmail() {
+		var emailForm = document.getElementById("emailForm");
+		emailForm.submit();
+	}
+</script>
+
+<script>
+	var emailModal = document.getElementById('emailModal');
+	emailModal.addEventListener('show.bs.modal', function (event) {
+		var button = event.relatedTarget; // Button that triggered the modal
+		var email = button.getAttribute('data-email'); // Extract info from data-* attributes
+
+		var input = emailModal.querySelector('#email');
+		input.value = email;
+	});
+</script>
+
+<script>
+	let isFiltered = false;
+
+	document.getElementById('filterBtn').addEventListener('click', function () {
+		const rows = document.querySelectorAll('#myTable tbody tr');
+		if (!isFiltered) {
+			rows.forEach(row => {
+				const status = row.getAttribute('data-status');
+				if (status !== "Overdue") {
+					row.style.display = 'none';
+				}
+			});
+			isFiltered = true;
+		} else {
+			rows.forEach(row => {
+				row.style.display = '';
+			});
+			isFiltered = false;
+		}
+	});
+
+		// Universal Table Sorter Class
+	class UniversalTableSorter {
+		constructor(tableId) {
+			this.table = document.getElementById(tableId);
+			if (!this.table) return;
+
+			this.tbody = this.table.querySelector('tbody');
+			this.headers = this.table.querySelectorAll('.sortable-header');
+			this.currentSort = { column: -1, direction: 'asc' };
+
+			this.init();
+		}
+
+		init() {
+			this.headers.forEach(header => {
+				header.addEventListener('click', (e) => {
+					e.preventDefault();
+					this.sortTable(header);
+				});
+			});
+		}
+
+		sortTable(header) {
+			const columnIndex = parseInt(header.dataset.column);
+			const dataType = header.dataset.type;
+
+			// Determine sort direction
+			let direction = 'asc';
+			if (this.currentSort.column === columnIndex && this.currentSort.direction === 'asc') {
+				direction = 'desc';
+			}
+
+			// Update current sort
+			this.currentSort = { column: columnIndex, direction: direction };
+
+			// Update header icons
+			this.updateHeaderIcons(header, direction);
+
+			// Get all rows and sort them
+			const rows = Array.from(this.tbody.querySelectorAll('tr'));
+
+			rows.sort((a, b) => {
+				const aValue = this.getCellValue(a, columnIndex, dataType);
+				const bValue = this.getCellValue(b, columnIndex, dataType);
+
+				return this.compareValues(aValue, bValue, dataType, direction);
+			});
+
+			// Re-append sorted rows
+			rows.forEach(row => this.tbody.appendChild(row));
+		}
+
+		getCellValue(row, columnIndex, dataType) {
+			const cell = row.cells[columnIndex];
+			let value = cell.textContent.trim();
+
+			// Handle links - get text content only
+			const link = cell.querySelector('a');
+			if (link) {
+				value = link.textContent.trim();
+			}
+
+			// Clean up status text (remove icons)
+			if (dataType === 'status') {
+				value = value.replace(/\s*$/, '').trim();
+			}
+
+			return value;
+		}
+
+		compareValues(a, b, dataType, direction) {
+			let comparison = 0;
+
+			switch (dataType) {
+				case 'date':
+					comparison = this.compareDates(a, b);
+					break;
+				case 'status':
+					comparison = this.compareStatus(a, b);
+					break;
+				case 'number':
+					comparison = this.compareNumbers(a, b);
+					break;
+				case 'text':
+				default:
+					comparison = a.toLowerCase().localeCompare(b.toLowerCase());
+					break;
+			}
+
+			return direction === 'desc' ? -comparison : comparison;
+		}
+
+		compareDates(dateA, dateB) {
+			// Handle "Null" values - put them at the end
+			if (dateA === 'Null' && dateB === 'Null') return 0;
+			if (dateA === 'Null') return 1;
+			if (dateB === 'Null') return -1;
+
+			// Parse DD/MM/YYYY format
+			const parseDate = (dateStr) => {
+				const parts = dateStr.split('/');
+				if (parts.length === 3) {
+					return new Date(parts[2], parts[1] - 1, parts[0]);
+				}
+				return new Date(dateStr);
+			};
+
+			const a = parseDate(dateA);
+			const b = parseDate(dateB);
+
+			return a - b;
+		}
+
+		compareStatus(statusA, statusB) {
+			// Define status priority (lower number = higher priority)
+			const statusPriority = {
+				'Overdue': 1,
+				'Not Received': 2,
+				'Received': 3
+			};
+
+			const priorityA = statusPriority[statusA] || 999;
+			const priorityB = statusPriority[statusB] || 999;
+
+			return priorityA - priorityB;
+		}
+
+		compareNumbers(numA, numB) {
+			// Remove commas and convert to numbers
+			const parseNumber = (str) => {
+				const cleaned = str.replace(/,/g, '');
+				return parseFloat(cleaned) || 0;
+			};
+
+			const a = parseNumber(numA);
+			const b = parseNumber(numB);
+
+			return a - b;
+		}
+
+		updateHeaderIcons(activeHeader, direction) {
+			// Reset all icons
+			this.headers.forEach(header => {
+				const icon = header.querySelector('.sort-icon');
+				icon.className = 'fas fa-sort sort-icon';
+			});
+
+			// Set active header icon
+			const activeIcon = activeHeader.querySelector('.sort-icon');
+			activeIcon.className = `fas fa-sort-${direction === 'asc' ? 'up' : 'down'} sort-icon active`;
+		}
+	}
+
+	// Initialize both tables when DOM is loaded
+	document.addEventListener('DOMContentLoaded', function() {
+		// Initialize uncompleted books table
+		new UniversalTableSorter('myTable');
+
+		// Initialize completed books table
+		new UniversalTableSorter('completedTable');
+
+		new UniversalTableSorter('completedTable2');
+
+		new UniversalTableSorter('completedTable3');
+
+		// Setup email modal if it exists
+		const emailModal = document.getElementById('emailModal');
+		if (emailModal) {
+			emailModal.addEventListener('show.bs.modal', function(event) {
+				const button = event.relatedTarget;
+				const email = button.getAttribute('data-email');
+				const emailInput = emailModal.querySelector('#email');
+				if (emailInput) {
+					emailInput.value = email;
+				}
+			});
+		}
+	});
+
+	async function showConfirm(element) {
+		const title = element.getAttribute("book-name");
+	const routeid = element.getAttribute("route-id");
+	var form = document.getElementById("DeliverForm");
+	const result = await Swal.fire({
+	title: 'Confirm Delivered',
+	text: "Do you want to confirm the book \" " + title + " \" has been handed to user?",
+	icon: 'warning',
+	showCancelButton: true,
+	confirmButtonColor: '#3085d6',
+	cancelButtonColor: '#d33',
+	confirmButtonText: 'Yes!'
+	});
+
+	if (result.isConfirmed) {
+		var idinput = form.querySelector("input[name='id']");
+		idinput.value = routeid;
+	return form.submit();
+	}
+	}
+
+	function sendEmail() {
+		var emailForm = document.getElementById("emailForm");
+		emailForm.submit();
+	}
+
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+
+@* @if (TempData["Notification"] != null)
+{
+	<script>
+
+		window.onload = function() {
+
+			Swal.fire({
+				title: "Success!",
+				text: "@TempData["Notification"]",
+				icon: "success",
+				confirmButtonText: "OK"
+			});
+		};
+	</script>
+} *@

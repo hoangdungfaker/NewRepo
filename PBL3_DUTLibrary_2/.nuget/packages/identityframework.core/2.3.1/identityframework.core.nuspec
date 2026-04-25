@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>IdentityFramework.Core</id>
+    <version>2.3.1</version>
+    <title>IdentityFramework.Core</title>
+    <authors>Microsoft</authors>
+    <owners>Enner Pérez</owners>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
+    <licenseUrl>http://www.microsoft.com/web/webpi/eula/net_library_eula_ENU.htm</licenseUrl>
+    <projectUrl>https://github.com/ennerperez/Identity.Framework</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/ennerperez/Identity.Framework/master/src/.editoricon.png</iconUrl>
+    <description>Core interfaces for .NET Identity.</description>
+    <summary>Core interfaces for .NET Identity.</summary>
+    <copyright>Copyright © Microsoft 2019</copyright>
+    <tags>Identity Membership</tags>
+  </metadata>
+</package>

@@ -1,0 +1,351 @@
+﻿@{
+    ViewData["Title"] = "Principle";
+    Layout = "_LayoutCustomer";
+}
+
+
+@* <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet"> *@
+<!-- Font Awesome -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+<style>
+    :root {
+        --primary-color: #DBCC8F;
+        --secondary-color: #c8d8e4;
+        --accent-color: #f2f2f2;
+        --text-color: #333;
+        --black-color: #000;
+    }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text-color);
+        background-color: var(--accent-color);
+    }
+
+    .header-section {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 80px 0;
+        position: relative;
+    }
+
+        .header-section::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 50px;
+            background-color: var(--accent-color);
+            clip-path: polygon(0 100%, 100% 100%, 100% 0);
+        }
+
+    .section-title {
+        color: var(--black-color);
+        border-bottom: 2px solid var(--black-color);
+        padding-bottom: 10px;
+        margin-bottom: 20px;
+    }
+
+    .card {
+        border: none;
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        margin-bottom: 20px;
+    }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.15);
+        }
+
+    .card-header {
+        background-color: var(--primary-color);
+        color: white;
+        font-weight: bold;
+    }
+
+    .rule-icon {
+        font-size: 2.5rem;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .principle-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 20px;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .table {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+    }
+
+        .table thead {
+            background-color: var(--primary-color);
+            color: white;
+        }
+
+    .contact-info {
+        background-color: var(--secondary-color);
+        border-radius: 10px;
+        padding: 20px;
+    }
+
+    .contact-icon {
+        font-size: 1.2rem;
+        color: var(--primary-color);
+        margin-right: 10px;
+    }
+
+    footer {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 20px 0;
+        margin-top: 50px;
+    }
+
+    .flex {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        gap: 1em;
+    }
+
+        .flex h5 {
+            margin: 0;
+        }
+</style>
+<div class="hero-wrap hero-bread" style="background-image: url('@Url.Content("~/images/bg_6.jpg")');">
+    <div class="container">
+        <div class="row no-gutters slider-text align-items-center justify-content-center">
+            <div class="col-md-9 ftco-animate text-center">
+                <p class="breadcrumbs"><span class="mr-2"><a asp-controller="Home" asp-action="Index">Home</a></span> <span>Principle</span></p>
+                <h1 class="mb-0 bread">Principle</h1>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container" style="margin-top: 50px">
+    <section class="mb-5">
+        <h2 class="section-title">Purpose</h2>
+        <p class="lead">
+            This website aims to provide an efficient and user-friendly platform for managing library resources, borrowing and returning books, and supporting the reading culture within our community.
+        </p>
+        <div class="row mt-4">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-search rule-icon"></i>
+                        <h5 class="card-title">Search Materials</h5>
+                        <p class="card-text">Easily search and browse through thousands of resources in the library's collection.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-laptop rule-icon"></i>
+                        <h5 class="card-title">Online Scheduling</h5>
+                        <p class="card-text">Schedule borrowing, renewals, and returns anytime, anywhere from your device.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="fas fa-history rule-icon"></i>
+                        <h5 class="card-title">Activity History</h5>
+                        <p class="card-text">Track your borrowing history and manage your personal account with ease.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Library Principles -->
+    <section class="mb-5">
+        <h2 class="section-title">Library Principles</h2>
+        <div class="row g-4" style="row-gap: 1rem">
+            <div class="col-md-4">
+                <div class="principle-card">
+                    <i class="fas fa-universal-access rule-icon"></i>
+                    <h4>Accessibility</h4>
+                    <p>All members have equal access to library materials and services.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="principle-card">
+                    <i class="fas fa-hand-holding rule-icon"></i>
+                    <h4>Responsibility</h4>
+                    <p>Users are expected to handle books and resources with care and return them on time.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="principle-card">
+                    <i class="fas fa-users rule-icon"></i>
+                    <h4>Respect</h4>
+                    <p>Users must respect library staff, fellow members, and library property.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="principle-card">
+                    <i class="fas fa-glasses rule-icon"></i>
+                    <h4>Transparency</h4>
+                    <p>All rules, fees, and services are clearly communicated and fairly enforced.</p>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="principle-card">
+                    <i class="fas fa-chart-line rule-icon"></i>
+                    <h4>Continuous Improvement</h4>
+                    <p>The library continuously updates and enhances its resources and systems to meet users' needs.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Library Rules & Fees -->
+    <section class="mb-5">
+        <h2 class="section-title">Library Rules & Fees</h2>
+        <div class="card">
+            <div class="card-header">
+                Violation Fee Table
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Violation</th>
+                                <th>Fee</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Late Return Fee</td>
+                                <td>@((ViewBag.OverdueFee as long?)?.ToString("N0") ?? "0") VND/day</td>
+                            </tr>
+                            <tr>
+                                <td>Damage Fee (per book)</td>
+                                <td>@((ViewBag.DamageFee as long?)?.ToString("N0") ?? "0") VND</td>
+                            </tr>
+                            <tr>
+                                <td>Lost Book Fee</td>
+                                <td>@((ViewBag.LostFee as long?)?.ToString("N0") ?? "0") VND</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- User Guidelines -->
+    <section class="mb-5">
+        <h2 class="section-title">User Guidelines</h2>
+        <div class="card">
+            <div class="card-body">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex">
+                        <div>
+                            <div class="flex">
+                                <i class="fas fa-user-plus me-3 mt-1" style="margin: 0px !important"></i>
+                                <h5>Registration & Login</h5>
+                            </div>
+                            <p>Users must register and log in to borrow books.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex">
+                        <div>
+                            <div class="flex">
+                                <i class="fas fa-calendar-alt me-3 mt-1"></i>
+                                <h5>Loan Period</h5>
+                            </div>
+                            <p>The standard loan period is 14 days.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex">
+                        <div>
+                            <div class="flex">
+                                <i class="fas fa-sync-alt me-3 mt-1"></i>
+                                <h5>Renewals</h5>
+                            </div>
+                            <p>Renewals can be made unless the item is reserved by another user.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex">
+                        <div>
+                            <div class="flex">
+                                <i class="fas fa-book me-3 mt-1"></i>
+                                <h5>Return Condition</h5>
+                            </div>
+                            <p>All borrowed materials must be returned in good condition.</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item d-flex">
+                        <div>
+                            <div class="flex">
+                                <i class="fas fa-money-bill-wave me-3 mt-1"></i>
+                                <h5>Fee Payment</h5>
+
+                            </div>
+                            <p>Fees must be settled before borrowing additional items.</p>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Diagram -->
+    <section class="mb-5">
+        <h2 class="section-title">Borrowing & Return Process</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex flex-column flex-md-row justify-content-between align-items-center text-center">
+                            <div class="mb-4 mb-md-0">
+                                <div class="bg-light rounded-circle p-4 mx-auto" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-search fa-2x text-primary"></i>
+                                </div>
+                                <h5 class="mt-3">Search</h5>
+                            </div>
+                            <i class="fas fa-arrow-right d-none d-md-block text-primary"></i>
+                            <i class="fas fa-arrow-down d-md-none text-primary mb-4"></i>
+                            <div class="mb-4 mb-md-0">
+                                <div class="bg-light rounded-circle p-4 mx-auto" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-shopping-cart fa-2x text-primary"></i>
+                                </div>
+                                <h5 class="mt-3">Reserve</h5>
+                            </div>
+                            <i class="fas fa-arrow-right d-none d-md-block text-primary"></i>
+                            <i class="fas fa-arrow-down d-md-none text-primary mb-4"></i>
+                            <div class="mb-4 mb-md-0">
+                                <div class="bg-light rounded-circle p-4 mx-auto" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-hand-holding-heart fa-2x text-primary"></i>
+                                </div>
+                                <h5 class="mt-3">Borrow</h5>
+                            </div>
+                            <i class="fas fa-arrow-right d-none d-md-block text-primary"></i>
+                            <i class="fas fa-arrow-down d-md-none text-primary mb-4"></i>
+                            <div>
+                                <div class="bg-light rounded-circle p-4 mx-auto" style="width: 100px; height: 100px; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fas fa-undo fa-2x text-primary"></i>
+                                </div>
+                                <h5 class="mt-3">Return</h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

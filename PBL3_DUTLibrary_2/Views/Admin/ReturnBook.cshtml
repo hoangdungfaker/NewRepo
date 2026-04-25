@@ -1,0 +1,170 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+@using PBL3_DUTLibrary.ViewModels;
+@model ReturnBookViewModel;
+
+<style>
+    .mainbody {
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .mycontainer {
+        background: white;
+        padding: 25px;
+        margin-left: 20%;
+        margin-top: 15%;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        text-align: center;
+        max-width: 1000px;
+        width: 100%;
+    }
+
+    h2 {
+        color: #333;
+        margin-bottom: 20px;
+    }
+
+    .form-group {
+        text-align: left;
+        margin-bottom: 15px;
+    }
+
+        .form-group label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+    .buttons {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btn {
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+        width: 48%;
+    }
+
+    .confirm-btn {
+        background-color: #28a745;
+        color: white;
+    }
+
+    .cancel-btn {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    .btn:hover {
+        opacity: 0.8;
+    }
+</style>
+<div class="mainbody">
+
+    <div class="mycontainer">
+        <h2>Return Confirmation</h2>
+        <form asp-action="ReturnBook" asp-controller="Admin" method="post">
+            <input asp-for="@Model.borrow.BorrowId" hidden />
+            <div class="form-group">
+                <label for="Email">Email</label>
+                <input id="Email" type="text" asp-for="@Model.borrow.User.Email" value="@Model.borrow.User.Email" readonly>
+            </div>
+            <div class="form-group">
+                <label for="RealName">Real Name</label>
+                <input id="RealName" type="text" asp-for="@Model.borrow.User.RealName" value="@Model.borrow.User.RealName" readonly>
+            </div>
+            <div class="form-group">
+                <label for="Title">Title</label>
+                <input id="Title" type="text" asp-for="@Model.borrow.Book.Title" value="@Model.borrow.Book.Title" readonly>
+            </div>
+            <div class="form-group">
+                @{
+					var borrowDate = Model.borrow.Time.ToString("d/M/yyyy");
+                }
+                <label for="Borrow Date">Borrow Date</label>
+                <input id="Borrow Date" type="text" value="@borrowDate" readonly>
+            </div>
+            <div class="form-group">
+                @{
+					var returnDate = DateTime.Now.Date.ToString("d/M/yyyy");
+                }
+                <label for="Return Date">Return Date</label>
+                <input id="Return Date" type="text" value="@returnDate" readonly>
+            </div>
+            <div class="form-group">
+                @{
+                    var feestring = string.Format("{0:N0}", @Model.TotalFee);
+                }
+                <label for="TotalFee">Total fee</label>
+                <input type="text" id="format" value="@feestring"/>
+                <input id="TotalFee" type="hidden" asp-for="@Model.TotalFee" value="@Model.TotalFee" readonly>
+            </div>
+            <div class="form-check text-start mb-3" style="text-align: left;">
+                <input class="form-check-input big-checkbox" type="checkbox" id="DamageCheckBox">
+                <label class="form-check-label" for="DamageCheckBox">
+                    Damage
+                </label>
+            </div>
+            <div class="form-check text-start mb-3" style="text-align: left;">
+                <input class="form-check-input big-checkbox" type="checkbox" id="LostCheckBox">
+                <label class="form-check-label" for="loginShowPassword">
+                    Lost
+                </label>
+            </div>
+            <div class="buttons">
+                <button type="submit" class="btn confirm-btn">Confirm</button>
+                <a type="button" class="btn cancel-btn" asp-controller="Admin" asp-action="BorrowReturn">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<script>
+	document.getElementById("DamageCheckBox").addEventListener("change", function () {
+		if (this.checked) {
+			document.getElementById("TotalFee").value = parseInt(document.getElementById("TotalFee").value) + @Model.Damage;
+		}
+        else
+        {
+			document.getElementById("TotalFee").value = parseInt(document.getElementById("TotalFee").value) - @Model.Damage;
+        }
+        //Format the format input using thousand separator
+        var formattedValue = new Intl.NumberFormat().format(document.getElementById("TotalFee").value);
+        document.getElementById("format").value = formattedValue;
+	});
+	document.getElementById("LostCheckBox").addEventListener("change", function () {
+		if (this.checked) {
+			document.getElementById("TotalFee").value = parseInt(document.getElementById("TotalFee").value) + @Model.Lost;
+		}
+        else
+        {
+			document.getElementById("TotalFee").value = parseInt(document.getElementById("TotalFee").value) - @Model.Lost;
+        }
+        //Format the format input using thousand separator
+        var formattedValue = new Intl.NumberFormat().format(document.getElementById("TotalFee").value);
+        document.getElementById("format").value = formattedValue;
+	});
+</script>

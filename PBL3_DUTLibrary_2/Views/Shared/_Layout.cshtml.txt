@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"] - Book Haven</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Library_Management.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/custom.css" asp-append-version="true" />
+    <style>
+        /* Navbar styles */
+        .navbar {
+            background-color: transparent;
+        }
+
+        .navbar-brand {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .navbar-brand img {
+            width: 50px;
+            height: auto;
+            margin-right: 0.5rem;
+        }
+
+        .navbar-nav .nav-link {
+            color: #fff;
+            transition: color 0.3s;
+        }
+
+        .navbar-nav .nav-link:hover {
+            color: #28a745;
+            text-decoration: none;
+        }
+
+        .navbar .btn {
+            border: none;
+            outline: none;
+            transition: background-color 0.3s;
+        }
+
+        .navbar .btn:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .navbar .btn:hover {
+            background-color: #28a745;
+            color: #fff;
+        }
+
+        /* Hamburger icon: chỉ hiện trên mobile */
+        #mobileMenuToggle {
+            display: none;
+            background: none;
+            border: none;
+            color: #28a745;
+            font-size: 1.5rem;
+            margin-right: 1rem;
+        }
+
+        @@media (max-width: 576px) {
+            #mobileMenuToggle {
+                display: block;
+            }
+        }
+
+        /* Fullscreen sidebar overlay */
+        #mobileSidebarOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            z-index: 1100;
+            display: none;
+            padding: 2rem;
+        }
+
+        /* Nút đóng sidebar */
+        #mobileSidebarOverlay .close-btn {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 2rem;
+            color: #28a745;
+        }
+
+        /* Container cho các link trong sidebar: căn giữa theo chiều ngang, nhưng dời lên trên chút */
+        #mobileSidebarOverlay .sidebar-links {
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* Các link trong sidebar */
+        #mobileSidebarOverlay .sidebar-link {
+            display: block;
+            color: #000;
+            text-decoration: none;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .sidebar-link:hover {
+            color: #28a745;
+            text-decoration: none;
+        }
+
+        /* Toast Notification System */
+        #toast-container {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            z-index: 1050;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .toast-notification {
+            width: 90%;
+            max-width: 500px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            animation: slideUp 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .toast-success {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .toast-error {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .toast-message {
+            flex-grow: 1;
+        }
+
+        .toast-close {
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 18px;
+            margin-left: 10px;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+
+        .toast-close:hover {
+            opacity: 1;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background-color: rgba(255, 255, 255, 0.7);
+        }
+
+        /* Đặt một code block rỗng @{} để Razor không hiểu @{}keyframes là code C# */
+        @{
+        }
+
+        @{}keyframes slideUp {
+            from {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @{}keyframes slideDown {
+            from {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100%);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Toast notification container -->
+    <div id="toast-container"></div>
+
+    <header>
+        <nav class="navbar navbar-expand-sm">
+            <div class="container-fluid">
+                <!-- Hamburger icon: hiển thị trên mobile -->
+                <button id="mobileMenuToggle" class="d-sm-none">
+                    &#9776;
+                </button>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo.png" alt="Logo" />
+                    Book Haven
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="navbar-collapse show d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="Index">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-controller="Home" asp-action="About">About</a>
+                        </li>
+                    </ul>
+
+                    <!-- Kiểm tra user đăng nhập -->
+                    @if (User?.Identity?.IsAuthenticated == true)
+                    {
+                        <span class="navbar-text me-2">
+                            Hello, @User.Identity.Name!
+                        </span>
+                        <a class="btn btn-outline-light" asp-controller="Account" asp-action="Logout" id="logoutButton">
+                            Logout
+                        </a>
+                    }
+                    else
+                    {
+                        <!-- Vẫn giữ nút Login / Register cũ -->
+                        <button class="btn btn-outline-light" data-bs-toggle="modal" data-bs-target="#authModal">
+                            Login / Register
+                        </button>
+                    }
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sidebar overlay full màn hình (ẩn mặc định) -->
+    <div id="mobileSidebarOverlay">
+        <button class="close-btn" id="mobileSidebarClose">&times;</button>
+        <div class="sidebar-links">
+            <a class="sidebar-link" href="@Url.Action("Index", "Home")">Home</a>
+            <a class="sidebar-link" href="@Url.Action("About", "Home")">About</a>
+        </div>
+    </div>
+
+    <div class="container my-4">
+        @RenderBody()
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <partial name="_AuthModalPartial" />
+    @await RenderSectionAsync("Scripts", required: false)
+
+      <script>
+        // Khi nhấn vào hamburger, hiển thị sidebar overlay
+        document.getElementById('mobileMenuToggle').addEventListener('click', function() {
+            document.getElementById('mobileSidebarOverlay').style.display = 'block';
+        });
+        // Khi nhấn vào nút đóng, ẩn sidebar overlay
+        document.getElementById('mobileSidebarClose').addEventListener('click', function() {
+            document.getElementById('mobileSidebarOverlay').style.display = 'none';
+        });
+
+        // Toast Notification System
+        const toastContainer = document.getElementById('toast-container');
+        let activeToasts = [];
+
+        // Function to create a new toast notification
+        function showToast(message, type = 'success', duration = 5000) {
+            // Create toast element
+            const toast = document.createElement('div');
+            toast.className = `toast-notification toast-${type}`;
+
+            // Generate a unique ID for this toast
+            const toastId = 'toast-' + Date.now();
+            toast.id = toastId;
+
+            // Add message and close button
+            toast.innerHTML = `
+                <div class="toast-message">${message}</div>
+                <button class="toast-close">&times;</button>
+                <div class="toast-progress" style="width: 100%"></div>
+            `;
+
+            // Add to DOM
+            toastContainer.appendChild(toast);
+
+            // Add to active toasts array
+            activeToasts.push({
+                id: toastId,
+                element: toast,
+                timeoutId: null
+            });
+
+            // Set up progress bar animation
+            const progressBar = toast.querySelector('.toast-progress');
+            progressBar.style.transition = `width ${duration}ms linear`;
+
+            // Force a reflow to make sure transition works
+            void progressBar.offsetWidth;
+
+            // Start the progress bar animation
+            progressBar.style.width = '0';
+
+            // Set up close button event
+            const closeBtn = toast.querySelector('.toast-close');
+            closeBtn.addEventListener('click', () => {
+                removeToast(toastId);
+            });
+
+            // Set timeout to auto-remove the toast
+            const timeoutId = setTimeout(() => {
+                removeToast(toastId);
+            }, duration);
+
+            // Store the timeout ID
+            const toastObj = activeToasts.find(t => t.id === toastId);
+            if (toastObj) {
+                toastObj.timeoutId = timeoutId;
+            }
+
+            // Return the toast ID
+            return toastId;
+        }
+
+        // Function to remove a toast notification
+        function removeToast(toastId) {
+            // Find the toast in our active toasts array
+            const index = activeToasts.findIndex(t => t.id === toastId);
+            if (index === -1) return;
+
+            const toast = activeToasts[index].element;
+            const timeoutId = activeToasts[index].timeoutId;
+
+            // Clear the timeout if it exists
+            if (timeoutId) {
+                clearTimeout(timeoutId);
+            }
+
+            // Add exit animation
+            toast.style.animation = 'slideDown 0.3s ease forwards';
+
+            // Remove from DOM after animation completes
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.parentNode.removeChild(toast);
+                }
+                // Remove from our array
+                activeToasts.splice(index, 1);
+            }, 300);
+        }
+
+        // Function to remove all active toasts
+        function removeAllToasts() {
+            // Create a copy of the array to iterate through
+            const toastsCopy = [...activeToasts];
+            
+            // Remove each toast
+            toastsCopy.forEach(toast => {
+                removeToast(toast.id);
+            });
+            
+            // Clear the array
+            activeToasts = [];
+        }
+
+        // Function to check for notification in URL
+        function checkForNotificationParameters() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const successMessage = urlParams.get('successMessage');
+            const errorMessage = urlParams.get('errorMessage');
+        
+            if (successMessage) {
+                showToast(decodeURIComponent(successMessage), 'success');
+            
+                // Remove the parameter from URL without refreshing
+                const newUrl = window.location.pathname + 
+                               window.location.search.replace(/[?&]successMessage=[^&]+(&|$)/, '');
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        
+            if (errorMessage) {
+                showToast(decodeURIComponent(errorMessage), 'error');
+            
+                // Remove the parameter from URL without refreshing
+                const newUrl = window.location.pathname + 
+                               window.location.search.replace(/[?&]errorMessage=[^&]+(&|$)/, '');
+                window.history.replaceState({}, document.title, newUrl);
+            }
+        }
+
+        // Add event listener to logout button to clear all toasts before logout
+        const logoutButton = document.getElementById('logoutButton');
+        if (logoutButton) {
+            logoutButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove all existing toasts
+                removeAllToasts();
+                
+                // Wait a brief moment to ensure toasts are removed before redirecting
+                setTimeout(() => {
+                    window.location.href = this.getAttribute('href');
+                }, 100);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check URL for notification parameters
+            checkForNotificationParameters();
+        
+            // Check for TempData values from .NET (handled as alert elements)
+            const successAlert = document.querySelector('.alert-success');
+            const errorAlert = document.querySelector('.alert-danger');
+
+            if (successAlert) {
+                const message = successAlert.textContent.trim();
+                showToast(message, 'success');
+                successAlert.remove();
+            }
+
+            if (errorAlert) {
+                const message = errorAlert.textContent.trim();
+                showToast(message, 'error');
+                errorAlert.remove();
+            }
+
+            // Store notifications in localStorage on page unload
+            window.addEventListener('beforeunload', function() {
+                const pendingToasts = activeToasts.map(toast => {
+                    const messageEl = toast.element.querySelector('.toast-message');
+                    const typeClass = toast.element.classList.contains('toast-success') ? 'success' : 'error';
+                    return {
+                        message: messageEl ? messageEl.textContent : '',
+                        type: typeClass
+                    };
+                });
+            
+                if (pendingToasts.length > 0) {
+                    localStorage.setItem('pendingToasts', JSON.stringify(pendingToasts));
+                }
+            });
+
+            // Check for stored notifications on page load
+            const pendingToastsJson = localStorage.getItem('pendingToasts');
+            if (pendingToastsJson) {
+                try {
+                    const pendingToasts = JSON.parse(pendingToastsJson);
+                    pendingToasts.forEach(toast => {
+                        showToast(toast.message, toast.type);
+                    });
+                    localStorage.removeItem('pendingToasts');
+                } catch (e) {
+                    console.error('Error parsing stored toasts:', e);
+                    localStorage.removeItem('pendingToasts');
+                }
+            }
+        });
+    </script>
+</body>
+</html>

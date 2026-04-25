@@ -1,0 +1,77 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|c:\\users\\dat11\\downloads\\pbl3_dutlibrary_2\\controllers\\principlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:controllers\\principlecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|c:\\users\\dat11\\downloads\\pbl3_dutlibrary_2\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|c:\\users\\dat11\\downloads\\pbl3_dutlibrary_2\\data\\librarycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{00DE0BFB-25C0-49BE-AF1E-49FB72CB5ED2}|PBL3_DUTLibrary.csproj|solutionrelative:data\\librarycontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 4,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{74946827-37a0-11d2-a273-00c04f8ef4ff}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T09:54:27.421Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "LibraryContext.cs",
+              "DocumentMoniker": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\Data\\LibraryContext.cs",
+              "RelativeDocumentMoniker": "Data\\LibraryContext.cs",
+              "ToolTip": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\Data\\LibraryContext.cs",
+              "RelativeToolTip": "Data\\LibraryContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T09:50:27.392Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "PrincipleController.cs",
+              "DocumentMoniker": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\Controllers\\PrincipleController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PrincipleController.cs",
+              "ToolTip": "C:\\Users\\dat11\\Downloads\\PBL3_DUTLibrary_2\\Controllers\\PrincipleController.cs",
+              "RelativeToolTip": "Controllers\\PrincipleController.cs",
+              "ViewState": "AgIAAAkAAAAAAAAAAAAAAAIAAAAcAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-06-09T09:45:02.154Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

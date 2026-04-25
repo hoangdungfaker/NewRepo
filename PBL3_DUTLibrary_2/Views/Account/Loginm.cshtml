@@ -1,0 +1,349 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutCustomer.cshtml";
+    ViewData["Title"] = "Authentication";
+
+    // Lấy ActiveForm từ TempData (nếu có)
+    var activeForm = TempData["ActiveForm"] as string ?? "login";
+}
+
+<div class="mainbody">
+    <div class="mycontainer">
+
+        <!-- ========== LOGIN ========== -->
+        <div id="loginFormContainer" style="display:@(activeForm == "login" ? "block" : "none")">
+            <main class="form-signin w-100 m-auto">
+                <form asp-action="Login" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
+                    @if (TempData["Error"] != null && activeForm == "login")
+                    {
+                        <div class="alert alert-danger">
+                            <b>Error:</b> @TempData["Error"]
+                        </div>
+                    }
+                    <!-- Email -->
+                    <div class="floating-group mb-3">
+                        <input type="email" name="email" class="my-floating" id="loginEmail" placeholder=" " required>
+                        <label for="loginEmail">Email</label>
+                    </div>
+                    <!-- Password -->
+                    <div class="floating-group mb-3">
+                        <input type="password" name="password" id="loginPassword" class="my-floating" placeholder=" " required>
+                        <label for="loginPassword">Password</label>
+                    </div>
+                    <!-- Checkbox căn trái -->
+                    <div class="form-check mb-3" style="text-align: left;">
+                        <input class="form-check-input big-checkbox" type="checkbox" id="loginShowPassword">
+                        <label class="form-check-label" for="loginShowPassword">Show Password</label>
+                    </div>
+                    <button class="btn btn-primary w-100 py-2" type="submit">Sign in</button>
+
+                    <!-- Bỏ link “Don’t have an account?” => thay bằng chữ đen, link "Sign Up" màu xanh -->
+                    <div class="mt-4">
+                        <span style="color: black; margin-right: 8px;">Don't have an account?</span>
+                        <a href="#" id="showRegisterLink" class="blue-link">Sign Up</a>
+                        |
+                        <a asp-action="ForgotPasswordEmail" class="blue-link">Forgot password?</a>
+                    </div>
+
+                    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+                </form>
+            </main>
+        </div>
+
+        <!-- ========== REGISTER ========== -->
+        <div id="registerFormContainer" style="display:@(activeForm == "register" ? "block" : "none")">
+            <main class="form-signin w-100 m-auto">
+                <form asp-action="Register" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Create an account</h1>
+                    @if (TempData["RegError"] != null && activeForm == "register")
+                    {
+                        <div class="alert alert-danger">
+                            <b>Error:</b> @TempData["RegError"]
+                        </div>
+                    }
+
+                    <!-- Username -->
+                    <div class="floating-group mb-3">
+                        <input type="text" name="Username" id="regUsername" class="my-floating" placeholder=" " required>
+                        <label for="regUsername">Username</label>
+                    </div>
+                    <!-- Email -->
+                    <div class="floating-group mb-3">
+                        <input type="email" name="Email" id="regEmail" class="my-floating" placeholder=" " required>
+                        <label for="regEmail">Email</label>
+                    </div>
+                    <!-- Password -->
+                    <div class="floating-group mb-3">
+                        <input type="password" name="Password" id="registerPassword" class="my-floating" placeholder=" " required>
+                        <label for="registerPassword">Password</label>
+                    </div>
+                    <!-- Confirm Password: tăng khoảng cách margin-bottom -->
+                    <div class="floating-group mb-4">
+                        <input type="password" name="ConfirmPassword" id="registerConfirmPassword" class="my-floating" placeholder=" " required>
+                        <label for="registerConfirmPassword">Confirm Password</label>
+                    </div>
+
+                    <!-- Checkbox Show Password căn trái -->
+                    <div class="form-check mb-2" style="text-align: left;">
+                        <input class="form-check-input big-checkbox" type="checkbox" id="registerShowPassword">
+                        <label class="form-check-label" for="registerShowPassword">Show Password</label>
+                    </div>
+                    <!-- Checkbox I agree... căn trái -->
+                    <div class="form-check mb-3" style="text-align: left;">
+                        <input class="form-check-input big-checkbox" type="checkbox" id="agreeTerms" required>
+                        <label class="form-check-label" for="agreeTerms">
+                            I agree to the <a href="/terms" target="_blank" class="blue-link">Terms &amp; Conditions</a>
+                        </label>
+                    </div>
+
+                    <button class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
+
+                    <!-- Already have an account => chữ đen, link "Sign in" màu xanh -->
+                    <div class="mt-4">
+                        <span style="color:black; margin-right:8px;">Already have an account?</span>
+                        <a href="#" id="showLoginLinkFromRegister" class="blue-link">Sign in</a>
+                    </div>
+
+                    <p class="mt-5 mb-3 text-body-secondary">&copy; 2017–2024</p>
+                </form>
+            </main>
+        </div>
+
+        <!-- ========== RESET STEP 1: Email ========== -->
+        <div id="resetEmailFormContainer" style="display:@(activeForm == "reset_email" ? "block" : "none")">
+            <main class="form-signin w-100 m-auto">
+                <form asp-action="ForgotPasswordEmail" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Reset Password</h1>
+                    <p>Enter your registered email to get a verification code.</p>
+                    @if (TempData["ForgotError"] != null && activeForm == "reset_email")
+                    {
+                        <div class="alert alert-danger">
+                            <b>Error:</b> @TempData["ForgotError"]
+                        </div>
+                    }
+                    @if (TempData["Message"] != null && activeForm == "reset_email")
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Message"]
+                        </div>
+                    }
+                    <div class="form-floating mb-3">
+                        <input type="email" name="Email" class="form-control" placeholder="Email" required>
+                    </div>
+                    <button class="btn btn-primary w-100 py-2" type="submit">Send Code</button>
+                    <div class="mt-3">
+                        <a href="#" id="showLoginLinkFromResetEmail">Back to Sign in</a>
+                    </div>
+                </form>
+            </main>
+        </div>
+
+        <!-- ========== RESET STEP 2: Verify Code ========== -->
+        <div id="resetCodeFormContainer" style="display:@(activeForm == "reset_code" ? "block" : "none")">
+            <main class="form-signin w-100 m-auto">
+                <form asp-action="VerifyCode" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Enter Verification Code</h1>
+                    <p>Please enter the 6-digit code we sent to your email.</p>
+                    @if (TempData["ForgotError"] != null && activeForm == "reset_code")
+                    {
+                        <div class="alert alert-danger">
+                            <b>Error:</b> @TempData["ForgotError"]
+                        </div>
+                    }
+                    @if (TempData["Message"] != null && activeForm == "reset_code")
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Message"]
+                        </div>
+                    }
+                    <div class="form-floating mb-3">
+                        <input type="text" name="inputCode" class="form-control" placeholder="Code" required>
+                    </div>
+                    <button class="btn btn-primary w-100 py-2" type="submit">Verify Code</button>
+                    <div class="mt-3">
+                        <a href="#" id="showLoginLinkFromResetCode">Back to Sign in</a>
+                    </div>
+                </form>
+            </main>
+        </div>
+
+        <!-- ========== RESET STEP 3: New Password ========== -->
+        <div id="resetNewPassFormContainer" style="display:@(activeForm == "reset_newpass" ? "block" : "none")">
+            <main class="form-signin w-100 m-auto">
+                <form asp-action="ResetPassword" method="post">
+                    <h1 class="h3 mb-3 fw-normal">Set New Password</h1>
+                    @if (TempData["ForgotError"] != null && activeForm == "reset_newpass")
+                    {
+                        <div class="alert alert-danger">
+                            <b>Error:</b> @TempData["ForgotError"]
+                        </div>
+                    }
+                    @if (TempData["Message"] != null && activeForm == "reset_newpass")
+                    {
+                        <div class="alert alert-success">
+                            @TempData["Message"]
+                        </div>
+                    }
+                    <div class="form-floating mb-1">
+                        <input type="password" name="newPassword" id="resetNewPassword" class="form-control" placeholder="New Password" required>
+                    </div>
+                    <div class="form-floating mb-1">
+                        <input type="password" name="confirmNewPassword" id="resetConfirmNewPassword" class="form-control" placeholder="Confirm New Password" required>
+                    </div>
+                    <div class="form-check text-start mb-3">
+                        <input class="form-check-input big-checkbox" type="checkbox" id="resetShowPassword">
+                        <label class="form-check-label" for="resetShowPassword">Show Password</label>
+                    </div>
+                    <button class="btn btn-primary w-100 py-2" type="submit">Reset Password</button>
+                    <div class="mt-3">
+                        <a href="#" id="showLoginLinkFromResetPass">Back to Sign in</a>
+                    </div>
+                </form>
+            </main>
+        </div>
+
+    </div>
+</div>
+
+@section Scripts {
+    <style>
+        .mainbody {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .mycontainer {
+            background: white;
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .big-checkbox {
+            transform: scale(1.3);
+            margin-right: 8px;
+        }
+        /* Xử lý floating label (Username, Email, Password...)
+                           Thay vì .form-control, ta dùng .my-floating + 1 label.
+                           Sử dụng position absolute... */
+        .floating-group {
+            position: relative;
+        }
+
+        .my-floating {
+            width: 100%;
+            padding: 12px 10px 8px 10px;
+            font-size: 1rem;
+            border: 1px solid #ccc;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+            .my-floating:focus {
+                border-color: gold;
+            }
+        /* Label ban đầu nằm “chồng” placeholder
+                           - Dịch top 50%, left 12px, transformY(-50%) => canh dọc
+                           - cỡ ~1rem */
+        .floating-group label {
+            position: absolute;
+            pointer-events: none;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #888;
+            transition: all 0.2s;
+        }
+        /* Khi input focus hoặc input có value => label nổi lên */
+        .my-floating:focus + label,
+        .my-floating:not(:placeholder-shown) + label {
+            top: 0;
+            font-size: 0.85rem;
+            color: gold;
+            transform: translateY(-50%) scale(0.95);
+            background: white;
+            padding: 0 4px;
+        }
+        /* Link xanh + underline on hover */
+        .blue-link {
+            color: blue;
+            text-decoration: none;
+        }
+
+            .blue-link:hover {
+                text-decoration: underline;
+            }
+    </style>
+    <script>
+        // Show/hide password
+        document.getElementById('loginShowPassword').addEventListener('change', function() {
+            var lp = document.getElementById('loginPassword');
+            lp.type = this.checked ? 'text' : 'password';
+        });
+        document.getElementById('registerShowPassword').addEventListener('change', function() {
+            var rp = document.getElementById('registerPassword');
+            var rcp = document.getElementById('registerConfirmPassword');
+            rp.type = this.checked ? 'text' : 'password';
+            rcp.type = this.checked ? 'text' : 'password';
+        });
+        document.getElementById('resetShowPassword').addEventListener('change', function() {
+            var rp = document.getElementById('resetNewPassword');
+            var rcp = document.getElementById('resetConfirmNewPassword');
+            rp.type = this.checked ? 'text' : 'password';
+            rcp.type = this.checked ? 'text' : 'password';
+        });
+
+        // Link: from register => login
+        document.getElementById('showLoginLinkFromRegister').addEventListener('click', function(e){
+            e.preventDefault();
+            showContainer('login');
+        });
+        // Link: from step1 => login
+        document.getElementById('showLoginLinkFromResetEmail').addEventListener('click', function(e){
+            e.preventDefault();
+            showContainer('login');
+        });
+        // Link: from step2 => login
+        document.getElementById('showLoginLinkFromResetCode').addEventListener('click', function(e){
+            e.preventDefault();
+            showContainer('login');
+        });
+        // Link: from step3 => login
+        document.getElementById('showLoginLinkFromResetPass').addEventListener('click', function(e){
+            e.preventDefault();
+            showContainer('login');
+        });
+
+        // Link: from login => register
+        document.getElementById('showRegisterLink').addEventListener('click', function(e){
+            e.preventDefault();
+            showContainer('register');
+        });
+
+        // Mặc định hiển thị container theo TempData["ActiveForm"]
+        var activeForm = "@(activeForm)"; // Rất quan trọng
+
+        // 5 containers: login, register, reset_email, reset_code, reset_newpass
+        function showContainer(formName) {
+            var containers = ["login", "register", "reset_email", "reset_code", "reset_newpass"];
+            containers.forEach(function(name){
+                var div = document.getElementById(name + "FormContainer");
+                if(div) {
+                    div.style.display = (name === formName ? "block" : "none");
+                }
+            });
+        }
+
+        // Gọi khi load xong trang
+        showContainer(activeForm);
+    </script>
+}

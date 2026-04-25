@@ -1,0 +1,86 @@
+﻿@{
+	Layout = "_LayoutAdmin";
+}
+@using PBL3_DUTLibrary.ViewModels;
+@using PBL3_DUTLibrary.Models;
+@model List<Borrow>;
+
+
+<div class="main-container">
+	@* 	<div class="search-toggle-icon dw dw-search2" data-toggle="header_search"></div> *@
+	<div class="search">
+		<form>
+			<div class="form-group mb-0 search-panel">
+				<i class="dw dw-search2 search-icon"></i>
+				<input type="text" class="form-control search-input" placeholder="Search Here" width="85%">
+				<div class="text-right">
+					<button class="btn btn-primary">Search</button>
+				</div>
+			</div>
+		</form>
+	</div>
+	<div class="mycontainer">
+		<h2 class="display-4 fw-normal">Borrowing List</h2>
+		<br />
+		<div class="table-container" style="max-height: 400px; overflow: auto;">
+			<table class="table table-striped table-bordered">
+				<thead style="position: sticky; top: 0; background: white; z-index: 1;">
+					<tr>
+						<th>User Email</th>
+						<th>Book Title</th>
+						<th>Borrowed Time</th>
+						<th>Deadline</th>
+						<th>Status</th>
+					</tr>
+				</thead>
+				<tbody>
+					@foreach (Borrow br in Model)
+					{
+						<tr>
+							<td>@br.User.Email</td>
+							<td>
+								2
+							</td>
+							<td>3</td>
+							<td>4</td>
+							<td>
+								5
+							</td>
+						</tr>
+					})
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<style>
+	.search-panel {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 10px;
+	}
+
+	.mycontainer {
+		margin-top: 30px;
+		background: white;
+		padding: 25px;
+		border-radius: 10px;
+		box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+		max-width: 1500px;
+		width: 100%;
+	}
+
+	.table-container {
+		border: 1px solid #ddd;
+		border-radius: 4px;
+	}
+
+	/* Responsive adjustments */
+	@@media (max-width: 768px) {
+		.table-container {
+			max-height: 300px;
+		}
+	}
+</style>

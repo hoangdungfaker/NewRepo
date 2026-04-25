@@ -1,0 +1,64 @@
+﻿<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="">
+    <div class="col-xl-8 mb-30" style="max-width: 100%;">
+        <div class="card-box height-100-p pd-20">
+            <h2 class="h4 mb-20">Book Borrowing by Genre</h2>
+            <div id="chart-circle-genreBorrow"></div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    $(document).ready(function() {
+        if (@Html.Raw(Json.Serialize(ViewBag.GenreBorrowData != null))) {
+            Highcharts.chart('chart-circle-genreBorrow', {
+                chart: {
+                    height: 400,
+                    type: 'pie',
+                    options3d: {
+                        enabled: true,
+                        alpha: 45
+                    }
+                },
+                title: {
+                    text: 'Book Borrowing Distribution by Genre'
+                },
+                // subtitle: {
+                //     text: 'Top 5 genres shown, others grouped into "Other" category'
+                // },
+                credits: {
+                    enabled: false
+                },
+                tooltip: {
+                    pointFormat: '{point.name}: <b>{point.y}</b> borrows<br/>Percentage: <b>{point.percentage:.1f}%</b>'
+                },
+                accessibility: {
+                    point: {
+                        valueSuffix: '%'
+                    }
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        depth: 35,
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                        },
+                        showInLegend: true
+                    }
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Borrows',
+                    colorByPoint: true,
+                    data: @Html.Raw(Json.Serialize(ViewBag.GenreBorrowData ?? new List<object[]>()))
+                }]
+            });
+        } else {
+            $('#chart-circle-genreBorrow').html('<div class="alert alert-info">No borrow data available</div>');
+        }
+    })
+</script>

@@ -1,0 +1,1145 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+    ViewData["Title"] = "Book Management";
+}
+
+<div class="main-container">
+    <div class="pd-ltr-20">
+        <!-- Page Header -->
+        <div class="page-header">
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <div class="title">
+                        <h4>Book Management</h4>
+                    </div>
+                    <nav aria-label="breadcrumb" role="navigation">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a asp-controller="Admin" asp-action="Index">Home</a></li>
+                            <li class="breadcrumb-item active" aria-current="page">Books</li>
+                        </ol>
+                    </nav>
+                </div>
+                <div class="col-md-6 col-sm-12 text-right">
+                    <div class="dropdown">
+                        <button class="btn btn-primary btn-rounded" type="button" id="add-book-btn">
+                            <i class="icon-copy fa fa-plus-circle mr-1"></i> New Book
+                        </button>
+                        <button class="btn btn-info btn-rounded ml-2" type="button" id="manage-genres-btn">
+                            <i class="icon-copy fa fa-tags mr-1"></i> Manage Genres
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Book Stats -->
+        <div class="row pb-10">
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <!-- New Card for Unique Titles -->
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-info font-weight-bold">@ViewBag.OverallUniqueBookTitles</div>
+                            <div class="weight-600 font-14 text-muted">Unique Titles</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(23, 162, 184, 0.1);">
+                                <span class="icon-copy fa fa-list-alt text-info"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <!-- Existing "Total Books" card, now adjusted -->
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-primary font-weight-bold">@ViewBag.OverallTotalBooks</div>
+                            <div class="weight-600 font-14 text-muted">Total Books</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(0, 123, 255, 0.1);">
+                                <span class="icon-copy fa fa-book-open text-primary"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <!-- Existing "Available Books" card, now adjusted -->
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-success font-weight-bold">@ViewBag.OverallAvailableBooks</div>
+                            <div class="weight-600 font-14 text-muted">Available Books</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(40, 167, 69, 0.1);">
+                                <span class="icon-copy fa fa-check-circle text-success"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3 col-md-6 mb-20">
+                <!-- Existing "Borrowed Books" card, now adjusted -->
+                <div class="card-box height-100-p widget-style1 bg-white">
+                    <div class="d-flex flex-wrap align-items-center">
+                        <div class="widget-data">
+                            <div class="h2 mb-0 text-danger font-weight-bold">@ViewBag.OverallBorrowedBooks</div>
+                            <div class="weight-600 font-14 text-muted">Borrowed Books</div>
+                        </div>
+                        <div class="widget-icon">
+                            <div class="icon" style="background-color: rgba(220, 53, 69, 0.1);">
+                                <span class="icon-copy fa fa-bookmark text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Books Data Table -->
+        <div class="card-box mb-30">
+            <div class="pd-20">
+                <h4 class="text-blue h4">
+                    <i class="icon-copy dw dw-library mr-2"></i>Book Collection
+                </h4>
+            </div>
+            <div class="px-4 pb-3">
+                <div class="row justify-content-between align-items-center">
+                    <div class="col-md-auto">
+                        <div class="dataTables_length">
+                            <label class="d-flex align-items-center font-14">
+                                <span class="mr-1">Show</span>
+                                <select id="table-length-selector" class="custom-select custom-select-sm form-control form-control-sm mx-2" style="min-width: 70px;"
+                                        onchange="handlePageSizeChange(this.value)">
+                                    <option value="10" selected="@(ViewBag.PageSize == 10)">10</option>
+                                    <option value="25" selected="@(ViewBag.PageSize == 25)">25</option>
+                                    <option value="50" selected="@(ViewBag.PageSize == 50)">50</option>
+                                    <option value="-1" selected="@(ViewBag.PageSize == -1)">All</option>
+                                </select>
+                                <span>entries</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-auto mt-2 mt-md-0">
+                        <form id="search-form" method="get" asp-action="Index" class="input-group input-group-sm">
+                            <input type="hidden" name="pageSize" value="@ViewBag.PageSize" />
+                            <input type="text" id="table-search" name="searchQuery" class="form-control form-control-sm" placeholder="Search books..." value="@ViewBag.SearchQuery" style="min-width: 250px;">
+                            <div class="input-group-append">
+                                <button class="btn btn-sm btn-primary" type="submit">
+                                    <i class="icon-copy dw dw-search"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="pb-20">
+                <table class="table nowrap hover data-table-responsive" style="width:100%">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="table-plus">
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.IdSortParm, searchQuery = ViewBag.SearchQuery, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    <i class="fa @(ViewBag.CurrentSort == "id_desc" ? "fa-sort-numeric-down" : (ViewBag.CurrentSort == "" || ViewBag.CurrentSort == null ? "fa-sort-numeric-up" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.TitleSortParm, searchQuery = ViewBag.SearchQuery, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    Title
+                                    <i class="fa @(ViewBag.CurrentSort == "title_asc" ? "fa-sort-alpha-up" : (ViewBag.CurrentSort == "title_desc" ? "fa-sort-alpha-down" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th>
+                                <a href="@Url.Action("Index", new { sortOrder = ViewBag.AuthorSortParm, searchQuery = ViewBag.SearchQuery, page = ViewBag.CurrentPage, pageSize = ViewBag.PageSize })" class="text-secondary">
+                                    Author
+                                    <i class="fa @(ViewBag.CurrentSort == "author_asc" ? "fa-sort-alpha-up" : (ViewBag.CurrentSort == "author_desc" ? "fa-sort-alpha-down" : "fa-sort"))"></i>
+                                </a>
+                            </th>
+                            <th>Genres</th>
+                            <th>Copies</th>
+                            <th>Status</th>
+                            <th class="datatable-nosort text-center">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var book in Model)
+                        {
+                            <tr>
+                                <td class="table-plus">
+                                    <img src="@(string.IsNullOrEmpty(book.Image) ? "/vendors/images/default-book.png" : book.Image)"
+                                         width="70" height="70" alt="@book.Title" class="rounded shadow-sm">
+                                </td>
+                                <td>
+                                    @{
+                                        var displayTitle = book.Title.Length > 30
+                                        ? book.Title.Substring(0, 30) + "..."
+                                        : book.Title;
+                                    }
+                                    <h5 class="font-16 mb-0 text-primary">@displayTitle</h5>
+                                </td>
+                                <td>@book.Author</td>
+                                <td>
+                                    @{
+                                        var fullGenres = book.GenresDisplay ?? "N/A"; // Ensure not null
+                                        var displayGenres = fullGenres;
+                                        int maxLength = 25; // Max characters to display
+
+                                        if (fullGenres != "N/A" && fullGenres.Length > maxLength)
+                                        {
+                                            // Try to truncate at the last comma before maxLength - 3 for "..."
+                                            string candidate = fullGenres.Substring(0, Math.Min(fullGenres.Length, maxLength - 3));
+                                            int lastComma = candidate.LastIndexOf(',');
+                                            if (lastComma > 0 && lastComma > candidate.Length - 10) // Check if comma is reasonably close to end
+                                            {
+                                                displayGenres = candidate.Substring(0, lastComma).TrimEnd() + "..."; // Trim trailing space after comma
+                                            }
+                                            else
+                                            {
+                                                displayGenres = candidate.TrimEnd() + "...";
+                                            }
+                                        }
+                                    }
+                                    <span title="@fullGenres">@displayGenres</span>
+                                </td>
+                                <td class="text-center">@book.TotalAmount</td>
+                                <td>
+                                    @if (book.Amount == book.TotalAmount)
+                                    {
+                                        <span class="badge badge-success badge-pill">Available</span>
+                                    }
+                                    else if (book.Amount == 0)
+                                    {
+                                        <span class="badge badge-danger badge-pill">Unavailable</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-warning badge-pill">@book.Amount/@book.TotalAmount</span>
+                                    }
+                                </td>
+                                <td class="text-center">
+                                    <div class="dropdown">
+                                        <a class="btn btn-link font-24 p-0 line-height-1 no-arrow dropdown-toggle" href="#" role="button" data-toggle="dropdown">
+                                            <i class="dw dw-more"></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-icon-list">
+                                            <a class="dropdown-item view-book" href="#" data-id="@book.BookId">
+                                                <i class="dw dw-eye"></i> View
+                                            </a>
+                                            <a class="dropdown-item edit-book" href="#" data-id="@book.BookId">
+                                                <i class="dw dw-edit2"></i> Edit
+                                            </a>
+                                            <a class="dropdown-item delete-book" href="#" data-id="@book.BookId">
+                                                <i class="dw dw-delete-3"></i> Delete
+                                            </a>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <!-- Pagination -->
+                <div class="row mt-3 px-4">
+                    <div class="col-sm-12 col-md-5">
+                        <div class="dataTables_info font-14" id="DataTables_info_custom" role="status">
+                            @{
+                                int startEntry = (ViewBag.CurrentPage - 1) * (ViewBag.PageSize == -1 ? ViewBag.FilteredTotalBooks : ViewBag.PageSize) + 1;
+                                if (ViewBag.FilteredTotalBooks == 0) startEntry = 0;
+                                int endEntry = Math.Min(ViewBag.CurrentPage * (ViewBag.PageSize == -1 ? ViewBag.FilteredTotalBooks : ViewBag.PageSize), ViewBag.FilteredTotalBooks);
+                                if (ViewBag.PageSize == -1) endEntry = ViewBag.FilteredTotalBooks;
+                            }
+                            Showing <span id="showing-entries-start">@startEntry</span> to <span id="showing-entries-end">@endEntry</span> of <span id="showing-entries-total">@ViewBag.FilteredTotalBooks</span> entries
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-7">
+                        <div class="dataTables_paginate paging_simple_numbers">
+                            @if (ViewBag.TotalPages > 1 && ViewBag.PageSize != -1)
+                            {
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination justify-content-center mb-0">
+                                        @if (ViewBag.CurrentPage > 1)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage - 1, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                                                    <i class="fa fa-angle-left"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#"><i class="fa fa-angle-left"></i></a>
+                                            </li>
+                                        }
+
+                                        @{
+                                            int startPage = Math.Max(1, ViewBag.CurrentPage - 2);
+                                            int endPage = Math.Min(ViewBag.TotalPages, startPage + 4);
+
+                                            if (endPage - startPage < 4 && ViewBag.TotalPages > 4)
+                                            {
+                                                if (ViewBag.CurrentPage <= 3) endPage = 5;
+                                                else startPage = ViewBag.TotalPages - 4;
+                                            }
+                                        }
+
+                                        @if (startPage > 1)
+                                        {
+                                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = 1, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">1</a></li>
+                                            @if (startPage > 2)
+                                            {
+                                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            }
+                                        }
+
+                                        @for (int i = startPage; i <= endPage; i++)
+                                        {
+                                            <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                                                <a class="page-link" href="@Url.Action("Index", new { page = i, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">@i</a>
+                                            </li>
+                                        }
+
+                                        @if (endPage < ViewBag.TotalPages)
+                                        {
+                                            @if (endPage < ViewBag.TotalPages - 1)
+                                            {
+                                                <li class="page-item disabled"><span class="page-link">...</span></li>
+                                            }
+                                            <li class="page-item"><a class="page-link" href="@Url.Action("Index", new { page = ViewBag.TotalPages, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">@ViewBag.TotalPages</a></li>
+                                        }
+
+                                        @if (ViewBag.CurrentPage < ViewBag.TotalPages)
+                                        {
+                                            <li class="page-item">
+                                                <a class="page-link" href="@Url.Action("Index", new { page = ViewBag.CurrentPage + 1, pageSize = ViewBag.PageSize, searchQuery = ViewBag.SearchQuery })">
+                                                    <i class="fa fa-angle-right"></i>
+                                                </a>
+                                            </li>
+                                        }
+                                        else
+                                        {
+                                            <li class="page-item disabled">
+                                                <a class="page-link" href="#"><i class="fa fa-angle-right"></i></a>
+                                            </li>
+                                        }
+                                    </ul>
+                                </nav>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer-wrap pd-20 mb-20 card-box">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="mb-0">DUTLibrary &copy; @DateTime.Now.Year - Library Management System</p>
+                </div>
+                <div class="col-md-6 text-right">
+                    <p class="mb-0">Page created at @DateTime.Now.ToString("HH:mm:ss dd/MM/yyyy")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add/Edit Book Modal -->
+<div class="modal fade bs-example-modal-lg" id="book-modal" tabindex="-1" role="dialog" aria-labelledby="book-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h4 class="modal-title" id="book-modal-label">Add New Book</h4>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="book-form" enctype="multipart/form-data">
+                    <input type="hidden" id="book-id" name="BookId" value="0">
+                    <div class="row">
+                        <!-- Left Column: Book Details -->
+                        <div class="col-md-7">
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="book-title">Book Title <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control form-control-lg" id="book-title" name="Title" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="book-author">Author <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="book-author" name="Author" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="book-amount">Copies <span class="text-danger">*</span></label>
+                                <input type="number" class="form-control" id="book-amount" name="Amount" min="1" value="1" required>
+                                <small class="form-text text-muted">Total number of copies in the library</small>
+                            </div>
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="book-genres">Genres</label>
+                                <select class="form-control select2-multiple" id="book-genres" name="SelectedGenreNames" multiple="multiple" style="width: 100%;">
+                                    @if (ViewBag.AllGenres is List<string> genreNames && genreNames.Any())
+                                    {
+                                        foreach (var genreName in genreNames)
+                                        {
+                                            <option value="@genreName">@genreName</option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option disabled>Could not load genres or no genres available.</option>
+                                    }
+                                </select>
+                                <small class="form-text text-muted">Select existing genres or type to add new ones.</small>
+                            </div>
+                        </div>
+
+                        <!-- Right Column: Book Cover -->
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label class="font-weight-bold" for="book-image">Book Cover <span class="text-danger" id="book-cover-required-star">*</span></label>
+                                <div class="custom-file mb-2">
+                                    <input type="file" class="custom-file-input" id="book-image" name="BookImage" accept="image/*">
+                                    <label class="custom-file-label" for="book-image">Choose file</label>
+                                </div>
+                                <small class="form-text text-muted d-block mb-2">Recommended: 300x450px. Required for new books.</small>
+                                <div class="text-center border rounded p-2 bg-light">
+                                    <img id="image-preview" src="/vendors/images/default-book.png" class="img-fluid" style="max-height: 200px;" alt="Book Cover Preview">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Description (Full Width Below Columns) -->
+                    <div class="form-group mt-3">
+                        <label class="font-weight-bold" for="book-description">Description</label>
+                        <textarea class="form-control" id="book-description" name="Description" rows="4" placeholder="Enter book description..."></textarea>
+                        <small class="form-text text-muted">Provide a summary or description of the book (optional).</small>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                    <i class="icon-copy fa fa-times mr-1"></i> Cancel
+                </button>
+                <button type="button" class="btn btn-primary" id="save-book">
+                    <i class="icon-copy fa fa-save mr-1"></i> Save
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Book Details Modal -->
+<div class="modal fade bs-example-modal-lg" id="details-modal" tabindex="-1" role="dialog" aria-labelledby="details-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h4 class="modal-title" id="details-title">Book Details</h4>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Content will be loaded dynamically -->
+                <div class="text-center py-5">
+                    <div class="dw dw-loader2 loader-animation"></div>
+                    <p class="mt-2 text-muted">Loading details...</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-info edit-from-details" style="display:none;">
+                    <i class="icon-copy fa fa-edit mr-1"></i> Edit
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="delete-modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-body text-center font-18">
+                <h4 class="padding-top-30 mb-30 weight-500">Are you sure you want to delete this book?</h4>
+                <p id="delete-warning" class="text-danger font-weight-bold">This action cannot be undone!</p>
+                <div class="padding-bottom-30 row" style="max-width: 170px; margin: 0 auto;">
+                    <div class="col-6">
+                        <button type="button" class="btn btn-secondary border-radius-100 btn-block confirmation-btn" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                        <div class="font-14 mt-1">Cancel</div>
+                    </div>
+                    <div class="col-6">
+                        <button type="button" class="btn btn-danger border-radius-100 btn-block confirmation-btn" id="confirm-delete"><i class="fa fa-check"></i></button>
+                        <div class="font-14 mt-1">Delete</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Manage Genres Modal -->
+<div class="modal fade" id="manage-genres-modal" tabindex="-1" role="dialog" aria-labelledby="manage-genres-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="manage-genres-modal-label">Manage Genres</h5>
+                <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="font-14 text-muted">Below is a list of all unique genres currently in use. Deleting a genre will remove it from all associated books.</p>
+                <div id="manageable-genres-list" class="mt-3" style="max-height: 300px; overflow-y: auto;">
+                    <!-- Genre list will be loaded here -->
+                    <div class="text-center py-3">
+                        <div class="dw dw-loader2 loader-animation"></div>
+                        <p class="mt-2 text-muted">Loading genres...</p>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script>
+        $(document).ready(function() {
+            // DataTable is now mainly for display and responsiveness, not client-side processing
+            var bookTable = $('.data-table-responsive').DataTable({
+                scrollCollapse: true,
+                autoWidth: false,
+                responsive: true,
+                destroy: true,
+                searching: false,
+                processing: false,
+                serverSide: false,
+                paging: false,
+                info: false,
+                "dom": 'rt<"clear">',
+                columnDefs: [{
+                    targets: "datatable-nosort",
+                    orderable: false,
+                }],
+                "language": {
+                    "emptyTable": "No books found matching your criteria.",
+                    "zeroRecords": "No matching books found"
+                }
+            });
+
+            // Handle "Show entries" change
+            window.handlePageSizeChange = function(value) {
+                var currentSearchQuery = $('#table-search').val();
+                var url = '@Url.Action("Index", "AdminBooks")' + '?page=1&pageSize=' + value;
+                if (currentSearchQuery) {
+                    url += '&searchQuery=' + encodeURIComponent(currentSearchQuery);
+                }
+                window.location.href = url;
+            };
+
+            // Set initial value for length selector based on ViewBag.PageSize
+            var initialPageSize = '@ViewBag.PageSize';
+            if (initialPageSize) {
+                $('#table-length-selector').val(initialPageSize);
+            }
+
+            // Initialize Select2 for the genres dropdown
+            $('#book-genres').select2({
+                placeholder: "Select genres or type to add new",
+                allowClear: true,
+                tags: true,
+                tokenSeparators: [',', ';'],
+                dropdownParent: $('#book-modal')
+            });
+
+            // Add New Book button - clear Select2 when opening for new book
+            $('#add-book-btn').click(function() {
+                $('#book-form')[0].reset();
+                $('#book-id').val(0); // Important for distinguishing create vs edit
+                $('#book-genres').val(null).trigger('change'); // Clear Select2
+                $('#book-modal-label').text('Add New Book');
+                $('#image-preview').attr('src', '/vendors/images/default-book.png');
+                $('#book-modal').modal('show');
+            });
+
+            // Edit Book button
+            $('.edit-book').click(function(e) {
+                e.preventDefault();
+                var bookId = $(this).data('id');
+                $.ajax({
+                    url: '@Url.Action("GetBookDetails", "AdminBooks")',
+                    type: 'GET',
+                    data: { bookId: bookId },
+                    success: function(response) {
+                        if (response.success) {
+                            $('#book-form')[0].reset();
+                            $('#book-id').val(response.bookId);
+                            $('#book-title').val(response.title);
+                            $('#book-author').val(response.author);
+                            $('#book-amount').val(response.amount);
+                            $('#book-description').val(response.description);
+                            $('#image-preview').attr('src', response.image || '/vendors/images/default-book.png');
+                            $('#book-genres').val(response.selectedGenreNames || []).trigger('change');
+                            $('#book-modal-label').text('Edit Book');
+                            $('#book-modal').modal('show');
+                        } else {
+                            showErrorMessage(response.message || 'Failed to load book details.');
+                        }
+                    },
+                    error: function() {
+                        showErrorMessage('An error occurred while fetching book details.');
+                    }
+                });
+            });
+
+            // View Book button
+            $('.view-book').click(function(e) {
+                e.preventDefault();
+                var bookId = $(this).data('id');
+                $('#details-modal .modal-body').html('<div class="text-center py-5"><div class="dw dw-loader2 loader-animation"></div><p class="mt-2 text-muted">Loading details...</p></div>'); // Reset to loading state
+                $('#details-modal').modal('show');
+
+                $.ajax({
+                    url: '@Url.Action("GetBookDetails", "AdminBooks")',
+                    type: 'GET',
+                    data: { bookId: bookId },
+                    success: function(response) {
+                        if (response.success) {
+                            var N_A = 'N/A';
+                            var detailsHtml = `
+                                <div class="row">
+                                    <div class="col-md-4 text-center mb-3">
+                                        <img src="${response.image || '/vendors/images/default-book.png'}"
+                                             class="img-fluid rounded shadow" style="max-height: 250px;"
+                                             alt="${response.title || N_A}">
+                                    </div>
+                                    <div class="col-md-8">
+                                        <h4 class="font-20 weight-500 mb-10 text-primary">${response.title || N_A}</h4>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <p class="font-14">
+                                                    <i class="icon-copy fa fa-user text-primary mr-2"></i>
+                                                    <strong>Author:</strong> ${response.author || N_A}
+                                                </p>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <p class="font-14">
+                                                    <i class="icon-copy fa fa-book text-primary mr-2"></i>
+                                                    <strong>Total Copies:</strong> ${response.amount == null ? N_A : response.amount}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <p class="font-14">
+                                            <i class="icon-copy fa fa-check-circle text-${(response.available != null && response.available > 0) ? 'success' : 'danger'} mr-2"></i>
+                                            <strong>Available Copies:</strong>
+                                            <span class="badge badge-${(response.available != null && response.available > 0) ? ((response.available === response.amount) ? 'success' : 'warning') : 'danger'} badge-pill">
+                                                ${response.available == null ? N_A : response.available} / ${response.amount == null ? N_A : response.amount}
+                                            </span>
+                                        </p>
+                                        <div class="mb-3">
+                                            <strong><i class="icon-copy fa fa-info-circle text-primary mr-2"></i>Description:</strong>
+                                            <p class="text-justify mt-2 p-3 bg-light rounded" style="white-space: pre-wrap; max-height: 150px; overflow-y: auto;">
+                                                ${response.description || 'No description available.'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="mt-3">
+                                    <strong><i class="icon-copy fa fa-tags text-primary mr-2"></i>Genres:</strong>
+                                    <p class="mt-1">
+                                        ${response.genreNames && response.genreNames.length > 0 ? response.genreNames.map(name => `<span class="badge badge-info mr-1">${escapeHtml(name)}</span>`).join(' ') : 'N/A'}
+                                    </p>
+                                </div>
+                                <div class="mt-4">
+                                    <h5 class="text-info"><i class="icon-copy fa fa-history mr-2"></i>Borrow History</h5>
+                                    ${response.borrowHistory && response.borrowHistory.length > 0 ? `
+                                    <ul class="list-group list-group-flush" style="max-height: 150px; overflow-y: auto;">
+                                        ${response.borrowHistory.map(item => {
+                                            const isOverdue = checkOverdue(item);
+
+                                            // Determine badge color and text based on status
+                                            const badgeClass = item.isReturned ? 'badge-success' :
+                                                             (item.isRejected ? 'badge-secondary' :
+                                                             (isOverdue ? 'badge-danger' : 'badge-warning'));
+
+                                            const statusText = item.isReturned ? `Returned: ${item.returnDate}` :
+                                                             (item.isRejected ? 'Rejected' :
+                                                             (isOverdue ? 'Overdue' : 'Not Returned Yet'));
+
+                                            return `
+                                            <li class="list-group-item d-flex justify-content-between align-items-center font-14">
+                                                <div class="d-flex align-items-center">
+                                                    <img src="${item.userImage || 'https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava1-bg.webp'}"
+                                                         class="rounded-circle mr-2" width="25" height="25" alt="User">
+                                                    <span class="text-primary mr-1">${item.userName}</span> -
+                                                    <span class="ml-1">Borrowed: ${item.borrowDate}</span>
+                                                </div>
+                                                <div class="text-right">
+                                                    <span class="badge ${badgeClass} badge-pill">
+                                                        ${statusText}
+                                                    </span>
+                                                </div>
+                                            </li>`;
+                                        }).join('')}
+                                    </ul>
+                                    ` : '<p class="text-muted font-14">No borrow history available for this book.</p>'}
+                                </div>`;
+                            $('#details-modal .modal-body').html(detailsHtml);
+                            $('#details-modal .edit-from-details').data('id', response.bookId).show();
+                        } else {
+                            $('#details-modal .modal-body').html('<p class="text-danger">Error: ' + (response.message || 'Could not load book details.') + '</p>');
+                        }
+                    },
+                    error: function() {
+                        $('#details-modal .modal-body').html('<p class="text-danger">An error occurred while fetching book details.</p>');
+                    }
+                });
+            });
+
+            // Edit button from details modal
+            $('.edit-from-details').click(function() {
+                var bookId = $(this).data('id');
+                $('#details-modal').modal('hide');
+                var $editButtonInTable = $('.edit-book[data-id="' + bookId + '"]');
+                if ($editButtonInTable.length) {
+                    $editButtonInTable.click();
+                } else {
+                     $.ajax({
+                        url: '@Url.Action("GetBookDetails", "AdminBooks")',
+                        type: 'GET',
+                        data: { bookId: bookId },
+                        success: function(response) {
+                            if (response.success) {
+                                $('#book-form')[0].reset();
+                                $('#book-id').val(response.bookId);
+                                $('#book-title').val(response.title);
+                                $('#book-author').val(response.author);
+                                $('#book-amount').val(response.amount);
+                                $('#book-description').val(response.description);
+                                $('#image-preview').attr('src', response.image || '/vendors/images/default-book.png');
+                                $('#book-genres').val(response.selectedGenreNames || []).trigger('change');
+                                $('#book-modal-label').text('Edit Book');
+                                $('#book-modal').modal('show');
+                            } else {
+                                showErrorMessage(response.message || 'Failed to load book details for editing.');
+                            }
+                        },
+                        error: function() {
+                            showErrorMessage('An error occurred while fetching book details for editing.');
+                        }
+                    });
+                }
+            });
+
+            // Delete Book button
+            $('.delete-book').click(function(e) {
+                e.preventDefault();
+                var bookId = $(this).data('id');
+                $('#delete-warning').html('This action cannot be undone!'); // Reset warning
+                $('#confirm-delete').data('id', bookId); // Store bookId on the confirm button
+                $('#delete-modal').modal('show');
+            });
+
+            // Confirm Delete button
+            $('#confirm-delete').click(function() {
+                var bookId = $(this).data('id');
+                $.ajax({
+                    url: '@Url.Action("Delete", "AdminBooks")',
+                    type: 'POST',
+                    data: { bookId: bookId }, // Send as form data
+                    headers: {
+                        // If you have AntiForgeryToken enabled globally, you might need this
+                        // "RequestVerificationToken": $('input[name="__RequestVerificationToken"]').val()
+                    },
+                    success: function(response) {
+                        $('#delete-modal').modal('hide');
+                        if (response.success) {
+                            showSuccessMessage('Book deleted successfully!');
+                            // Reload the page to reflect changes
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            showErrorMessage(response.message || 'Failed to delete book.');
+                        }
+                    },
+                    error: function() {
+                        $('#delete-modal').modal('hide');
+                        showErrorMessage('An error occurred while deleting the book.');
+                    }
+                });
+            });
+
+            // Handle file input change to show image preview
+            $('#book-image').on('change', function() {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    $('#image-preview').attr('src', e.target.result);
+                }
+                if (this.files && this.files[0]) {
+                    reader.readAsDataURL(this.files[0]);
+                    $(this).next('.custom-file-label').html(this.files[0].name);
+                } else {
+                    $('#image-preview').attr('src', '/vendors/images/default-book.png');
+                    $(this).next('.custom-file-label').html('Choose file');
+                }
+            });
+
+            // Save book (create or update)
+            $('#save-book').click(function() {
+                var bookId = $('#book-id').val(); // Get bookId FIRST
+                var isCreating = (bookId == 0);
+
+                console.log(`Save button clicked. BookId: ${bookId}, IsCreating: ${isCreating}`);
+
+                 // Hide/show required star based on mode
+                if (isCreating) {
+                    $('#book-cover-required-star').show();
+                } else {
+                    $('#book-cover-required-star').hide();
+                }
+
+                // --- Basic client-side checks ---
+                if (!$('#book-title').val().trim()) {
+                    showValidationMessage($('#book-title'), 'Please enter a book title'); return;
+                } else { clearValidationMessage($('#book-title')); }
+
+                if (!$('#book-author').val().trim()) {
+                    showValidationMessage($('#book-author'), 'Please enter an author name'); return;
+                } else { clearValidationMessage($('#book-author')); }
+
+                var amountVal = $('#book-amount').val();
+                if (!amountVal || parseInt(amountVal) < 1) {
+                    showValidationMessage($('#book-amount'), 'Please enter a valid number of copies (minimum 1).'); return;
+                } else { clearValidationMessage($('#book-amount')); }
+
+                // *** Add check for Book Cover ONLY when creating ***
+                if (isCreating && (!$('#book-image')[0].files || $('#book-image')[0].files.length === 0)) {
+                    showValidationMessage($('#book-image'), 'Please choose a book cover image.'); return;
+                } else {
+                    clearValidationMessage($('#book-image')); // Clear any previous error message
+                }
+                // *** End check for Book Cover ***
+
+                // Clear previous server errors
+                clearAllValidationMessages();
+
+                // --- End Basic client-side checks ---
+
+                var formData = new FormData(document.getElementById('book-form'));
+
+                // *** Manually append selected genre names ***
+                var selectedGenres = $('#book-genres').val() || [];
+                console.log("Client-side selected genres before sending:", selectedGenres);
+
+                formData.delete('SelectedGenreNames'); // Clear just in case
+                selectedGenres.forEach(function(genreName) {
+                    formData.append('SelectedGenreNames', genreName);
+                });
+
+                // Optional: Log FormData contents
+                console.log("FormData entries for SelectedGenreNames before sending:");
+                for (var pair of formData.entries()) {
+                    if (pair[0] === 'SelectedGenreNames') {
+                        console.log('  Key:', pair[0], 'Value:', pair[1]);
+                    }
+                }
+                // *** End append selected genre names ***
+
+                // Show saving status
+                var $saveButton = $(this);
+                $saveButton.html('<i class="fa fa-spinner fa-spin mr-1"></i> Saving...');
+                $saveButton.prop('disabled', true);
+
+                $.ajax({
+                    url: bookId == 0 ? '@Url.Action("Create", "AdminBooks")' : '@Url.Action("Edit", "AdminBooks")',
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            $('#book-modal').modal('hide');
+                            showSuccessMessage(bookId == 0 ? 'Book added successfully!' : 'Book updated successfully!');
+                            setTimeout(function() {
+                                location.reload();
+                            }, 1500);
+                        } else {
+                            // --- Handle Validation Errors ---
+                            if (response.errors) {
+                                showErrorMessage(response.message || 'Validation failed. Please check the highlighted fields.'); // General message
+                                $.each(response.errors, function(key, value) {
+                                    // Find the input field by name attribute (case-insensitive match just in case)
+                                    var $inputField = $('[name="' + key + '"]', '#book-form').first();
+                                    if (!$inputField.length) {
+                                         $inputField = $('[name="' + key + '"]', '#book-form').first();
+                                         // Try finding by ID if name fails (e.g., #book-title)
+                                         if (!$inputField.length) {
+                                             $inputField = $('#book-' + key.toLowerCase());
+                                         }
+                                    }
+                                    // Display the error message near the field
+                                    if ($inputField.length) {
+                                        showValidationMessage($inputField, value.join(' '));
+                                    } else {
+                                        console.warn("Could not find input field for validation error key:", key);
+                                    }
+                                });
+                            } else {
+                                // General server error without specific field info
+                                showErrorMessage(response.message || 'An error occurred while saving.');
+                            }
+                            // --- End Handle Validation Errors ---
+                        }
+                        // Reset button state
+                        $saveButton.html('<i class="icon-copy fa fa-save mr-1"></i> Save');
+                        $saveButton.prop('disabled', false);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("AJAX Error:", status, error, xhr.responseText);
+                        var errorMessage = 'An unexpected server error occurred.';
+                        if (xhr.responseJSON && xhr.responseJSON.message) {
+                            errorMessage = xhr.responseJSON.message; // Use server message if available
+                        } else if (xhr.responseText) {
+                            // Try to extract a simpler message if it's just text
+                            try {
+                                var parsedError = JSON.parse(xhr.responseText);
+                                if(parsedError.message) errorMessage = parsedError.message;
+                            } catch(e) {
+                                // Keep default if parsing fails
+                            }
+                        }
+                         // Check for specific controller errors (e.g., cannot remove borrowed copies)
+                        if (errorMessage.includes("Cannot reduce copies") || errorMessage.includes("Could not remove the required number")) {
+                           // Keep the specific message from the controller
+                        } else {
+                             errorMessage = 'Server error saving book. Please check logs or try again.';
+                        }
+
+                        showErrorMessage(errorMessage);
+                        // Reset button state
+                        $saveButton.html('<i class="icon-copy fa fa-save mr-1"></i> Save');
+                        $saveButton.prop('disabled', false);
+                    }
+                });
+            });
+
+            // Reset button state on modal close, in case of premature close while saving
+            $('#book-modal').on('hidden.bs.modal', function () {
+                var $saveButton = $('#save-book');
+                if ($saveButton.prop('disabled')) { // If it was saving
+                    $saveButton.html('<i class="icon-copy fa fa-save mr-1"></i> Save');
+                    $saveButton.prop('disabled', false);
+                }
+            });
+
+            // --- Helper functions for validation messages ---
+            function showValidationMessage($element, message) {
+                // Find or create an error message container next to the element
+                var $errorContainer = $element.closest('.form-group').find('.validation-error-message');
+                if (!$errorContainer.length) {
+                    // Insert after the input/textarea/select or its parent div if it's complex (like custom file input)
+                     var $targetElement = $element;
+                     if($element.hasClass('custom-file-input')) {
+                        $targetElement = $element.closest('.custom-file');
+                     } else if($element.is('textarea')) {
+                         // Place after textarea itself
+                     } else {
+                         // Default: place after the input element
+                     }
+
+                    $errorContainer = $('<div class="validation-error-message text-danger font-12 mt-1"></div>');
+                    $targetElement.after($errorContainer);
+                }
+                $errorContainer.text(message);
+                $element.addClass('is-invalid'); // Add Bootstrap's invalid class
+            }
+
+            function clearValidationMessage($element) {
+                $element.closest('.form-group').find('.validation-error-message').remove();
+                $element.removeClass('is-invalid');
+            }
+
+            function clearAllValidationMessages() {
+                 $('#book-form .validation-error-message').remove();
+                 $('#book-form .is-invalid').removeClass('is-invalid');
+            }
+            // --- End Helper functions ---
+
+            function showSuccessMessage(message) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success',
+                    text: message,
+                    showConfirmButton: false,
+                    timer: 1500
+                });
+            }
+
+            function showErrorMessage(message) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: message || 'An unexpected error occurred.',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#3085d6'
+                });
+            }
+
+            function escapeHtml(unsafe) {
+                return unsafe
+                     .replace(/&/g, "&amp;")
+                     .replace(/</g, "&lt;")
+                     .replace(/>/g, "&gt;")
+                     .replace(/"/g, "&quot;")
+                     .replace(/'/g, "&#039;");
+            }
+
+            // --- Manage Genres Modal Logic ---
+            var genreDeleted = false; // Flag to track if deletion occurred
+
+            $('#manage-genres-btn').click(function() {
+                genreDeleted = false; // Reset flag when opening
+                loadManageableGenres();
+                $('#manage-genres-modal').modal('show');
+            });
+
+            function loadManageableGenres() {
+                var $listContainer = $('#manageable-genres-list');
+                // Show loader
+                $listContainer.html('<div class="text-center py-3"><div class="dw dw-loader2 loader-animation"></div><p class="mt-2 text-muted">Loading genres...</p></div>');
+
+                $.ajax({
+                    url: '@Url.Action("GetManageableGenres", "AdminBooks")',
+                    type: 'GET',
+                    success: function(response) {
+                        if (response.success && response.genres) {
+                            if (response.genres.length > 0) {
+                                var genresHtml = '<ul class="list-group list-group-flush">';
+                                response.genres.forEach(function(genreName) {
+                                    genresHtml += `<li class="list-group-item d-flex justify-content-between align-items-center">`;
+                                    // Use helper function to escape HTML for display
+                                    genresHtml += `<span>${escapeHtml(genreName)}</span>`;
+                                    // Use helper function to escape HTML for data attribute and title
+                                    genresHtml += `<button type="button" class="btn btn-sm btn-outline-danger delete-genre-btn" data-genre-name="${escapeHtml(genreName)}" title="Delete ${escapeHtml(genreName)}"><i class="fa fa-trash-o"></i></button>`;
+                                    genresHtml += `</li>`;
+                                });
+                                genresHtml += '</ul>';
+                                $listContainer.html(genresHtml);
+                            } else {
+                                $listContainer.html('<p class="text-center text-muted py-3">No genres found or all genres are currently unassigned from books.</p>');
+                            }
+                        } else {
+                            showErrorMessage(response.message || 'Could not load genres.');
+                            $listContainer.html('<p class="text-danger text-center py-3">Error loading genres.</p>');
+                        }
+                    },
+                    error: function() {
+                        showErrorMessage('An error occurred while fetching the list of genres.');
+                        $listContainer.html('<p class="text-danger text-center py-3">Error loading genres.</p>');
+                    }
+                });
+            }
+
+            // Event delegation for delete genre button (since buttons are dynamically added)
+            $('#manageable-genres-list').on('click', '.delete-genre-btn', function() {
+                var genreName = $(this).data('genre-name');
+                if (!genreName) return;
+
+                var escapedGenreName = escapeHtml(genreName);
+                var $clickedButton = $(this); // Keep a reference to the clicked button
+
+                Swal.fire({
+                    title: 'Are you sure?',
+                    html: `Do you really want to delete the genre "<b>${escapedGenreName}</b>"?<br>This will remove it from all associated books. <br><b>This action cannot be undone.</b>`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#6c757d',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        var originalButtonHtml = $clickedButton.html();
+                        // Disable all delete buttons in the list and show loading on the clicked one
+                        $('#manageable-genres-list .delete-genre-btn').prop('disabled', true);
+                        $clickedButton.html('<i class="fa fa-spinner fa-spin"></i> Deleting...');
+
+                        $.ajax({
+                            url: '@Url.Action("DeleteGenreByName", "AdminBooks")',
+                            type: 'POST',
+                            data: { genreName: genreName },
+                            success: function(response) {
+                                if (response.success) {
+                                    showSuccessMessage(response.message || 'Genre deleted successfully!');
+                                    genreDeleted = true; // Set flag
+                                    loadManageableGenres(); // Refresh list (this will re-enable buttons implicitly)
+                                } else {
+                                    showErrorMessage(response.message || 'Failed to delete genre.');
+                                    // If deletion failed, re-enable all buttons
+                                    $('#manageable-genres-list .delete-genre-btn').prop('disabled', false);
+                                    $clickedButton.html(originalButtonHtml); // Restore original HTML
+                                }
+                            },
+                            error: function(xhr, status, error) {
+                                console.error("AJAX Error Deleting Genre:", status, error, xhr.responseText);
+                                showErrorMessage('An error occurred while trying to delete the genre. Check console.');
+                                // If error occurred, re-enable all buttons
+                                $('#manageable-genres-list .delete-genre-btn').prop('disabled', false);
+                                $clickedButton.html(originalButtonHtml); // Restore original HTML
+                            }
+                        });
+                    }
+                });
+            });
+
+            // Reload page if a genre was deleted when modal closes
+            $('#manage-genres-modal').on('hidden.bs.modal', function () {
+                if (genreDeleted) {
+                    location.reload(); // Reload the page to reflect changes everywhere
+                }
+            });
+            // --- End Manage Genres Modal Logic ---
+
+            // Function to check if a borrow is overdue
+            function checkOverdue(item) {
+                if (item.isReturned || item.isRejected) return false;
+
+                try {
+                    // If there's no borrowDate, we can't determine
+                    if (!item.borrowDate) return false;
+
+                    // Standard loan period (14 days)
+                    const LOAN_PERIOD_DAYS = 14;
+                    const borrowDate = new Date(item.borrowDate);
+
+                    if (isNaN(borrowDate.getTime())) {
+                        console.warn("Invalid borrow date:", item.borrowDate);
+                        return false;
+                    }
+
+                    // Calculate due date
+                    const dueDate = new Date(borrowDate);
+                    dueDate.setDate(dueDate.getDate() + LOAN_PERIOD_DAYS);
+
+                    // Book is overdue if current date is past the due date
+                    return new Date() > dueDate;
+                } catch (e) {
+                    console.error("Error checking overdue status:", e);
+                    return false;
+                }
+            }
+        });
+    </script>
+
+    <!-- SweetAlert2 for nicer notifications -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Select2 -->
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <!-- Script to handle overdue status display -->
+    <script src="/js/book-overdue-check.js"></script>
+}

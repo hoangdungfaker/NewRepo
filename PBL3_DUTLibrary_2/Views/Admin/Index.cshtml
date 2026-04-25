@@ -1,0 +1,41 @@
+﻿@{
+    Layout = "_LayoutAdmin";
+}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="main-container">
+    <div class="pd-ltr-20">
+        <div class="card-box pd-20 height-100-p mb-30">
+            <div class="row align-items-center">
+                <div class="col-md-4">
+                    <img src="~/vendors/images/banner-img.png" alt="">
+                </div>
+                <div class="col-md-8">
+                    <h4 class="font-20 weight-500 mb-10 text-capitalize">
+                        Welcome back <div class="weight-600 font-30 text-blue">Admin @ViewBag.AdminUsername !!</div>
+                    </h4>
+                    <p class="font-18 max-width-600">
+                        Today is @ViewBag.CurrentDate
+                        Wishing you a productive day!
+
+                        "The library is a treasure trove of knowledge -
+                        And you are its most important guardian!"
+                    </p>
+                </div>
+            </div>
+        </div>
+        @await Html.PartialAsync("DateRangePicker")
+        @await Html.PartialAsync("Statistic")
+        @* @await Html.PartialAsync("ChartGenreBook") *@
+        @await Html.PartialAsync("ChartBorrowGenre")
+        @await Html.PartialAsync("ColumnChartRevenue")
+        @await Html.PartialAsync("MostPopularBook")
+        @await Html.PartialAsync("MostUserBorrows")
+        @await Html.PartialAsync("MostAccessLogin")
+
+        <div class="footer-wrap pd-20 mb-20 card-box">
+            @* DeskApp - Bootstrap 4 Admin Template By <a href="https://github.com/dropways" target="_blank">Ankit Hingarajiya</a> *@
+            DUTLibrary - Admin by
+        </div>
+    </div>
+</div>
+<!-- js -->

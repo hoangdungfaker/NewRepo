@@ -1,0 +1,50 @@
+﻿<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<div class="">
+    <div class="col-xl-8 mb-30" style="max-width: 100%;">
+        <div class="card-box height-100-p pd-20">
+            <h2 class="h4 mb-20">Activity</h2>
+            @* <div id="chart5"></div> *@
+            <div id="chart-circle-genreBook" ></div>
+        </div>
+    </div>
+    @* <div class="col-xl-4 mb-30"> *@
+    @*     <div class="card-box height-100-p pd-20"> *@
+    @*         <h2 class="h4 mb-20">Lead Target</h2> *@
+    @*         <div id="chart6"></div> *@
+    @*     </div> *@
+    @* </div> *@
+</div>
+
+@* @section Scripts { *@
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script>
+    $(document).ready(function() {
+            if (@Html.Raw(Json.Serialize(ViewBag.GenreCounts != null))) {
+                
+            Highcharts.chart('chart-circle-genreBook', {
+            chart: {
+                height: 1200
+            },
+            title: {
+                text: 'Book Distribution by Genre'
+            },
+            credits: {
+                enabled: false
+            },
+            tooltip: {
+                pointFormat: '{point.name}: <b>{point.y}</b><br/>Quantity: <b>{point.percentage:.1f}%</b>'
+            },
+            series: [{
+                type: 'pie',
+                allowPointSelect: true,
+                keys: ['name', 'y', 'selected', 'sliced'],
+                data: @Html.Raw(Json.Serialize(ViewBag.GenreCounts ?? new List<object[]>())),
+                showInLegend: true
+            }]
+        });
+    } else {
+        $('#chart-circle-genreBook').html('<div class="alert alert-info">No genre data available</div>');
+    }
+    })
+</script>
+@* } *@
