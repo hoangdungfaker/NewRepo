@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("PBL3_DUTLibrary")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+6690ac8ba87a3aa8ee910f4355f7c6b7656a883b")]
 [assembly: System.Reflection.AssemblyProductAttribute("PBL3_DUTLibrary")]
 [assembly: System.Reflection.AssemblyTitleAttribute("PBL3_DUTLibrary")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

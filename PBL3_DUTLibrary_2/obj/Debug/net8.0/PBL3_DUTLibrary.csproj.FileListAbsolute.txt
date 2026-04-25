@@ -1107,3 +1107,4 @@ D:\database\PBL3_DUTLibrary_2\PBL3_DUTLibrary_2\obj\Debug\net8.0\refint\PBL3_DUT
 D:\database\PBL3_DUTLibrary_2\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary.pdb
 D:\database\PBL3_DUTLibrary_2\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary.genruntimeconfig.cache
 D:\database\PBL3_DUTLibrary_2\PBL3_DUTLibrary_2\obj\Debug\net8.0\ref\PBL3_DUTLibrary.dll
+D:\database\PBL3_DUTLibrary_2\PBL3_DUTLibrary_2\obj\Debug\net8.0\PBL3_DUTLibrary.sourcelink.json
